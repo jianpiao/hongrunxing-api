@@ -1,4 +1,5 @@
 import { MidwayConfig } from '@midwayjs/core';
+import { join } from 'path';
 
 export default {
   // use for cookie sign key, should change to your own and keep security
@@ -21,5 +22,21 @@ export default {
     validationOptions: {
       allowUnknown: true, // 全局生效
     },
+  },
+  upload: {
+    mode: 'file',
+    fileSize: '10mb',
+    whitelist: [
+      '.jpg',
+      '.jpeg',
+      '.png',
+      '.gif',
+      '.webp',
+      '.svg',
+      '.mp4',
+      '.avi',
+    ],
+    tmpdir: join(__dirname, '../..', 'public/uploadFiles'),
+    cleanTimeout: 24 * 60 * 60 * 1000,
   },
 } as MidwayConfig;

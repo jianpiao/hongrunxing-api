@@ -1,4 +1,11 @@
-import { Inject, Controller, Get, Query } from '@midwayjs/decorator';
+import {
+  Inject,
+  Controller,
+  Get,
+  Query,
+  Post,
+  Files,
+} from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import { ApiService } from '../service/api.service';
 import { UserService } from '../service/user.service';
@@ -20,9 +27,18 @@ export class APIController {
     return { success: true, message: 'OK', data: user };
   }
 
-  @Get('/get_carousel')
-  async getCarousel(@Query('uid') uid) {
-    const data = await this.apiService.getCarousel({ uid });
-    return { success: true, message: 'OK', data: data };
+  @Post('/upload')
+  async upload(@Files() files) {
+    console.log(files);
+    const domain = 'http://172.20.10.4:7001/public/uploadFiles';
+    const filePath = files[0].data.split('uploadFiles')[1];
+    const path = domain + filePath;
+    return {
+      success: true,
+      errorMessage: 'OK',
+      data: {
+        path,
+      },
+    };
   }
 }

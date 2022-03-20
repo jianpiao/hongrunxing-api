@@ -23,4 +23,7 @@ export class CompanyInfo {
 
   @Column('text', { name: 'desc', nullable: true })
   desc: string | null;
+
+  @Column('varchar', { name: 'show_img', nullable: true })
+  show_img: string | null;
 }

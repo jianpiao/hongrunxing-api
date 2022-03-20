@@ -7,12 +7,16 @@ import * as orm from '@midwayjs/orm';
 import { DefaultErrorFilter } from './filter/default.filter';
 import { NotFoundFilter } from './filter/notfound.filter';
 import { ReportMiddleware } from './middleware/report.middleware';
+import * as upload from '@midwayjs/upload';
+import * as staticFile from '@midwayjs/static-file';
 
 @Configuration({
   imports: [
     orm,
     koa,
+    upload,
     validate,
+    staticFile,
     {
       component: info,
       enabledEnvironment: ['local'],

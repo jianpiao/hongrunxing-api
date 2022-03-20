@@ -11,6 +11,8 @@
     "@midwayjs/koa": "^3.0.0",
     "@midwayjs/logger": "^2.14.0",
     "@midwayjs/orm": "3.1.5",
+    "@midwayjs/static-file": "3",
+    "@midwayjs/upload": "3",
     "@midwayjs/validate": "3",
     "mysql2": "^2.3.3",
     "typeorm": "^0.3.0"

@@ -1,13 +1,21 @@
 import { Column, PrimaryGeneratedColumn } from "typeorm";
 import { EntityModel } from "@midwayjs/orm";
 
-@EntityModel("phone", { schema: "hongrunxing" })
-export class Phone {
+@EntityModel("carousel", { schema: "hongrunxing" })
+export class Carousel {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("varchar", { name: "phone", nullable: true, length: 255 })
-  phone: string | null;
+  @Column("varchar", {
+    name: "path",
+    nullable: true,
+    comment: "图片路径",
+    length: 255,
+  })
+  path: string | null;
+
+  @Column("int", { name: "is_del", comment: "是否删除", default: () => "'0'" })
+  is_del: number;
 
   @Column("timestamp", {
     name: "create_time",
@@ -25,9 +33,6 @@ export class Phone {
   })
   update_time: Date | null;
 
-  @Column("varchar", { name: "name", nullable: true, length: 255 })
-  name: string | null;
-
-  @Column("int", { name: "is_del", default: () => "'0'" })
-  is_del: number;
+  @Column("varchar", { name: "type", nullable: true, length: 255 })
+  type: string | null;
 }
