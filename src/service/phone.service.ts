@@ -37,22 +37,28 @@ export class PhoneService {
     } = params;
     const _pageSize = (pageSize && Number(pageSize)) || 10;
     const _current = (current && Number(current)) || 1;
+    const obj = {
+      id,
+      name: Like(`%${name}%`),
+      phone: Like(`%${phone}%`),
+      create_time: Between(new Date(create_time), new Date()),
+      update_time: Between(new Date(update_time), new Date()),
+      is_del: 0,
+    };
+    id && (obj['id'] = id);
     const res = await this.phoneModel.find({
-      where: {
-        id,
-        name: Like(`%${name}%`),
-        phone: Like(`%${phone}%`),
-        create_time: Between(new Date(create_time), new Date()),
-        update_time: Between(new Date(update_time), new Date()),
-        is_del: 0,
-      },
+      where: obj,
       order: {
         id: 'ASC',
       },
       skip: (_current - 1) * _pageSize,
       take: _pageSize,
     });
-    const total = await this.phoneModel.count();
+    const total = await this.phoneModel.count({
+      where: {
+        is_del: 0,
+      },
+    });
     return {
       current: _current,
       pageSize: _pageSize,

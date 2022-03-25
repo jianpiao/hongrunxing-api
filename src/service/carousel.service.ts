@@ -2,7 +2,7 @@ import { Provide } from '@midwayjs/decorator';
 import { InjectEntityModel } from '@midwayjs/orm';
 import { rmdirSync } from 'fs';
 import { join } from 'path';
-import { In, Not, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Carousel } from '../entity/Carousel';
 
 export interface ICarousel {
@@ -20,18 +20,18 @@ export class CarouselService {
   apiModel: Repository<Carousel>;
 
   async save(body: ICarousel[]) {
-    const notInIds = body.filter(e => e.id !== 0);
-    const notInRow = await this.apiModel.find({
-      where: {
-        id: Not(In(notInIds)),
-      },
-    });
-    notInRow.map(e => {
-      e.is_del = 1;
-      return e;
-    });
+    // const notInIds = body.filter(e => e.id !== 0);
+    // const notInRow = await this.apiModel.find({
+    //   where: {
+    //     id: Not(In(notInIds)),
+    //   },
+    // });
+    // notInRow.map(e => {
+    //   e.is_del = 1;
+    //   return e;
+    // });
     // 删除没用的数据
-    await this.apiModel.save(notInRow);
+    // await this.apiModel.save(notInRow);
 
     const addIds = body
       .filter(e => e.id === 0)

@@ -43,17 +43,18 @@ export class MessageService {
     } = params;
     const _pageSize = (pageSize && Number(pageSize)) || 10;
     const _current = (current && Number(current)) || 1;
+    const obj = {
+      phone: Like(`%${phone}%`),
+      title: Like(`%${title}%`),
+      content: Like(`%${content}%`),
+      username: Like(`%${username}%`),
+      create_time: Between(new Date(create_time), new Date()),
+      type: type,
+      is_del: 0,
+    };
+    id && (obj['id'] = id);
     const res = await this.messageModel.find({
-      where: {
-        id,
-        phone: Like(`%${phone}%`),
-        title: Like(`%${title}%`),
-        content: Like(`%${content}%`),
-        username: Like(`%${username}%`),
-        create_time: Between(new Date(create_time), new Date()),
-        type: type,
-        is_del: 0,
-      },
+      where: obj,
       order: {
         id: 'ASC',
       },
@@ -61,7 +62,11 @@ export class MessageService {
       take: _pageSize,
     });
     console.log('res', res);
-    const total = await this.messageModel.count();
+    const total = await this.messageModel.count({
+      where: {
+        is_del: 0,
+      },
+    });
     return {
       current: _current,
       pageSize: _pageSize,

@@ -23,6 +23,11 @@ export default {
       allowUnknown: true, // 全局生效
     },
   },
+  // cors: { // 跨域
+  //   credentials: false,
+  //   origin: '*',
+  //   allowHeaders: '*',
+  // },
   upload: {
     mode: 'file',
     fileSize: '10mb',

@@ -1,0 +1,378 @@
+import { Provide } from '@midwayjs/decorator';
+import { InjectEntityModel } from '@midwayjs/orm';
+import { Product } from '../entity/Product';
+import { ProductCategory } from '../entity/ProductCategory';
+import { ProductTexture } from '../entity/ProductTexture';
+import { Between, Like, Repository } from 'typeorm';
+
+export interface IProduct {
+  id?: number;
+  name?: string;
+  type?: string;
+  desc?: string;
+  src?: string;
+  content?: string;
+  category?: number;
+  texture?: number;
+  price?: number;
+  update_time?: number;
+  create_time?: number;
+  current?: number;
+  pageSize?: number;
+  is_del?: number;
+}
+
+export interface IProductTexture {
+  id?: number;
+  name?: string;
+  is_del?: number;
+  father_id?: number;
+  type: string;
+  update_time?: number;
+  create_time?: number;
+  current?: number;
+  pageSize?: number;
+}
+
+export interface IProductCategory {
+  id?: number;
+  name?: string;
+  is_del?: number;
+  type: string;
+  update_time?: number;
+  create_time?: number;
+  current?: number;
+  pageSize?: number;
+}
+
+interface IOption {
+  label: string;
+  value: number;
+}
+
+interface IGetList {
+  type: string;
+  texture_id: number;
+  current?: number;
+  pageSize?: number;
+  name?: string;
+  desc?: string;
+  price?: number;
+}
+
+export interface IOptions extends IOption {
+  children: IOption[];
+}
+
+@Provide()
+export class ProductService {
+  @InjectEntityModel(Product)
+  productModel: Repository<Product>;
+
+  @InjectEntityModel(ProductCategory)
+  productCategoryModel: Repository<ProductCategory>;
+
+  @InjectEntityModel(ProductTexture)
+  productTextureModel: Repository<ProductTexture>;
+
+  /**  ~~~~~~~ 产品和案例 ~~~~~~~~ **/
+
+  // save
+  async save(body: IProduct) {
+    const res: IProduct = await this.productModel.save(body);
+    return res.id;
+  }
+
+  // find all
+  async getList(params: IGetList) {
+    const {
+      name = '',
+      desc = '',
+      texture_id,
+      type = 'product',
+      price,
+      pageSize,
+      current,
+    } = params;
+    const _pageSize = (pageSize && Number(pageSize)) || 10;
+    const _current = (current && Number(current)) || 1;
+
+    const obj = {
+      name: Like(`%${name}%`),
+      desc: Like(`%${desc}%`),
+      type: type,
+      is_del: 0,
+    };
+    Number(texture_id) && (obj['texture'] = texture_id);
+    Number(price) && (obj['price'] = price);
+    const res = await this.productModel.find({
+      where: obj,
+      order: {
+        id: 'ASC',
+      },
+      skip: (_current - 1) * _pageSize,
+      take: _pageSize,
+    });
+    const total = await this.productModel.count({
+      where: {
+        is_del: 0,
+      },
+    });
+    return {
+      current: _current,
+      pageSize: _pageSize,
+      total,
+      list: res,
+    };
+  }
+
+  // find all
+  async findAll(params: IProduct) {
+    const {
+      id,
+      name = '',
+      desc = '',
+      content = '',
+      category,
+      texture,
+      type = 'product',
+      price,
+      pageSize,
+      current,
+      create_time = new Date('2022-01-01 00:00:00'),
+      update_time = new Date('2022-01-01 00:00:00'),
+    } = params;
+    const _pageSize = (pageSize && Number(pageSize)) || 10;
+    const _current = (current && Number(current)) || 1;
+    const obj = {
+      name: Like(`%${name}%`),
+      desc: Like(`%${desc}%`),
+      content: Like(`%${content}%`),
+      category: category && Like(category),
+      type: type,
+      texture: texture && Like(texture),
+      price: price && Like(price),
+      create_time: Between(new Date(create_time), new Date()),
+      update_time: Between(new Date(update_time), new Date()),
+      is_del: 0,
+    };
+    if (id) {
+      obj['id'] = id;
+    }
+    const res = await this.productModel.find({
+      where: obj,
+      order: {
+        id: 'ASC',
+      },
+      skip: (_current - 1) * _pageSize,
+      take: _pageSize,
+    });
+    const total = await this.productModel.count({
+      where: {
+        is_del: 0,
+      },
+    });
+    return {
+      current: _current,
+      pageSize: _pageSize,
+      total,
+      list: res,
+    };
+  }
+
+  async findById(id: number) {
+    const res = await this.productModel.findOneBy({ id });
+    return res;
+  }
+
+  async update(params: IProduct) {
+    const { id, name, desc, category, texture, type, content, price } = params;
+    const res = await this.productModel.findOneBy({ id });
+
+    name && (res.name = name);
+    content && (res.content = content);
+    desc && (res.desc = desc);
+    category && (res.category = category);
+    texture && (res.texture = texture);
+    type && (res.type = type);
+    price && (res.price = price);
+
+    const saveRes = await this.productModel.save(res);
+    return saveRes;
+  }
+
+  async delete(id: number) {
+    const res = await this.productModel.findOneBy({ id });
+    res.is_del = 1;
+    await this.productModel.save(res);
+    return '删除成功';
+  }
+
+  /** ~~~~~~~~~~~产品/案例分类~~~~~~~~~~~~~ */
+  async saveCategory(body: IProductCategory) {
+    const res: IProductCategory = await this.productCategoryModel.save(body);
+    return res.id;
+  }
+
+  async findCategory(params: IProductCategory) {
+    const {
+      id,
+      name = '',
+      pageSize,
+      type = 'product',
+      current,
+      create_time = new Date('2022-01-01 00:00:00'),
+      update_time = new Date('2022-01-01 00:00:00'),
+    } = params;
+    const _pageSize = (pageSize && Number(pageSize)) || 10;
+    const _current = (current && Number(current)) || 1;
+    const res = await this.productCategoryModel.find({
+      where: {
+        id,
+        type,
+        name: Like(`%${name}%`),
+        create_time: Between(new Date(create_time), new Date()),
+        update_time: Between(new Date(update_time), new Date()),
+        is_del: 0,
+      },
+      order: {
+        id: 'ASC',
+      },
+      skip: (_current - 1) * _pageSize,
+      take: _pageSize,
+    });
+    const total = await this.productCategoryModel.count({
+      where: {
+        is_del: 0,
+      },
+    });
+    return {
+      current: _current,
+      pageSize: _pageSize,
+      total,
+      list: res,
+    };
+  }
+
+  async updateCategory(params: IProductCategory) {
+    const { id, name } = params;
+    const res = await this.productCategoryModel.findOneBy({ id });
+    name && (res.name = name);
+    const saveRes = await this.productCategoryModel.save(res);
+    return saveRes;
+  }
+
+  // 删除分类，将绑定该分类的一并删除
+  async deleteCategory(id: number) {
+    const product = await this.productModel.find({
+      where: {
+        category: id,
+      },
+    });
+    for (let i = 0; i < product.length; i++) {
+      product[i].is_del = 1;
+      await this.productModel.save(product[i]);
+    }
+    const res = await this.productCategoryModel.findOneBy({ id });
+    res.is_del = 1;
+    await this.productCategoryModel.save(res);
+    return '删除成功';
+  }
+
+  /** ~~~~~~~~~~~产品材质~~~~~~~~~~~~~ */
+  async saveTexture(body: IProductTexture) {
+    const res: IProductTexture = await this.productTextureModel.save(body);
+    return res.id;
+  }
+
+  async findTexture(params: IProductTexture) {
+    const {
+      id,
+      name = '',
+      pageSize,
+      father_id,
+      current,
+      type,
+      create_time = new Date('2022-01-01 00:00:00'),
+      update_time = new Date('2022-01-01 00:00:00'),
+    } = params;
+    const _pageSize = (pageSize && Number(pageSize)) || 10;
+    const _current = (current && Number(current)) || 1;
+    const res = await this.productTextureModel.find({
+      where: {
+        id,
+        type,
+        name: Like(`%${name}%`),
+        father_id: father_id && Like(father_id),
+        create_time: Between(new Date(create_time), new Date()),
+        update_time: Between(new Date(update_time), new Date()),
+        is_del: 0,
+      },
+      order: {
+        id: 'ASC',
+      },
+      skip: (_current - 1) * _pageSize,
+      take: _pageSize,
+    });
+    const total = await this.productTextureModel.count({
+      where: {
+        is_del: 0,
+      },
+    });
+    return {
+      current: _current,
+      pageSize: _pageSize,
+      total,
+      list: res,
+    };
+  }
+
+  async updateTexture(params: IProductTexture) {
+    const { id, name, father_id } = params;
+    const res = await this.productTextureModel.findOneBy({ id });
+    name && (res.name = name);
+    father_id && (res.father_id = father_id);
+    const saveRes = await this.productTextureModel.save(res);
+    return saveRes;
+  }
+
+  // 删除分类，将绑定该分类的一并删除
+  async deleteTexture(id: number) {
+    const product = await this.productModel.find({
+      where: {
+        texture: id,
+      },
+    });
+    for (let i = 0; i < product.length; i++) {
+      product[i].is_del = 1;
+      await this.productModel.save(product[i]);
+    }
+    const res = await this.productTextureModel.findOneBy({ id });
+    res.is_del = 1;
+    await this.productTextureModel.save(res);
+    return '删除成功';
+  }
+
+  async findCategoryTree() {
+    const texture = await this.productTextureModel.find();
+    const fatherIds = [...new Set(texture.map(e => e.father_id))];
+    console.log('fatherIds', fatherIds.values[0]);
+    const list: IOptions[] = [];
+    for (let i = 0; i < fatherIds.length; i++) {
+      const res = await this.productCategoryModel.findOneBy({
+        id: fatherIds[i],
+      });
+      list.push({
+        label: res.name,
+        value: res.id,
+        children: [],
+      });
+    }
+    for (let i = 0; i < list.length; i++) {
+      list[i].children = texture
+        .filter(e => e.father_id === list[i].value)
+        .map(e => ({ label: e.name, value: e.id }));
+    }
+    return list;
+  }
+}

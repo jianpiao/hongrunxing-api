@@ -9,6 +9,7 @@ import { NotFoundFilter } from './filter/notfound.filter';
 import { ReportMiddleware } from './middleware/report.middleware';
 import * as upload from '@midwayjs/upload';
 import * as staticFile from '@midwayjs/static-file';
+import * as crossDomain from '@midwayjs/cross-domain';
 
 @Configuration({
   imports: [
@@ -17,6 +18,7 @@ import * as staticFile from '@midwayjs/static-file';
     upload,
     validate,
     staticFile,
+    crossDomain,
     {
       component: info,
       enabledEnvironment: ['local'],

@@ -1,4 +1,4 @@
-import { Inject, Controller, Get, Query, Body, Put } from '@midwayjs/decorator';
+import { Inject, Controller, Get, Body, Post } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import { Validate } from '@midwayjs/validate';
 import { InfoDTO } from '../dto/componyInfo';
@@ -22,9 +22,10 @@ export class CarouselController {
     };
   }
 
-  @Put('/update')
+  @Post('/update')
   @Validate()
   async update(@Body() body: InfoDTO) {
+    console.log('body', body);
     const res = await this.apiService.update(body);
     return { success: true, errorMessage: 'OK', data: res };
   }
