@@ -22,6 +22,7 @@ import {
   AddTextureDTO,
   UpdateTextureDTO,
   ListDataDTO,
+  RecommendDTO,
 } from '../dto/product';
 import { ProductService } from '../service/product.service';
 
@@ -36,6 +37,20 @@ export class ProductController {
   @Get('/get')
   async get(@Query() query: ListDTO) {
     const res = await this.apiService.findAll(query);
+    return {
+      success: true,
+      errorMessage: 'OK',
+      data: res,
+    };
+  }
+
+  @Get('/getRecommend')
+  async getRecommend(@Query() query: RecommendDTO) {
+    const res = await this.apiService.findAll({
+      current: 1,
+      pageSize: 6,
+      ...query,
+    });
     return {
       success: true,
       errorMessage: 'OK',
@@ -78,6 +93,16 @@ export class ProductController {
   async del(@Body() body: IdDTO) {
     const res = await this.apiService.delete(body.id);
     return { success: true, errorMessage: 'OK', data: res };
+  }
+
+  @Get('/getCategoryList')
+  async getCategoryList() {
+    const res = await this.apiService.findCategoryList();
+    return {
+      success: true,
+      errorMessage: 'OK',
+      data: res,
+    };
   }
 
   @Get('/getCategory')

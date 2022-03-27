@@ -53,6 +53,7 @@ interface IOption {
 interface IGetList {
   type: string;
   texture_id: number;
+  category_id: number;
   current?: number;
   pageSize?: number;
   name?: string;
@@ -89,6 +90,7 @@ export class ProductService {
       name = '',
       desc = '',
       texture_id,
+      category_id,
       type = 'product',
       price,
       pageSize,
@@ -104,6 +106,7 @@ export class ProductService {
       is_del: 0,
     };
     Number(texture_id) && (obj['texture'] = texture_id);
+    Number(category_id) && (obj['category'] = category_id);
     Number(price) && (obj['price'] = price);
     const res = await this.productModel.find({
       where: obj,
@@ -114,9 +117,7 @@ export class ProductService {
       take: _pageSize,
     });
     const total = await this.productModel.count({
-      where: {
-        is_del: 0,
-      },
+      where: obj,
     });
     return {
       current: _current,
@@ -168,9 +169,7 @@ export class ProductService {
       take: _pageSize,
     });
     const total = await this.productModel.count({
-      where: {
-        is_del: 0,
-      },
+      where: obj,
     });
     return {
       current: _current,
@@ -212,6 +211,35 @@ export class ProductService {
   async saveCategory(body: IProductCategory) {
     const res: IProductCategory = await this.productCategoryModel.save(body);
     return res.id;
+  }
+
+  async findCategoryList() {
+    const category = await this.productCategoryModel.find({
+      where: {
+        is_del: 0,
+      },
+    });
+    const texture = await this.productTextureModel.find({
+      where: {
+        is_del: 0,
+      },
+    });
+
+    const obj = texture.reduce((cur: any, pre) => {
+      if (cur[pre.father_id]) {
+        cur[pre.father_id].push(pre);
+      } else {
+        cur[pre.father_id] = [pre];
+      }
+      return cur;
+    }, {});
+    return category.map(e => {
+      return {
+        id: e.id,
+        name: e.name,
+        children: obj[e.id] || [],
+      };
+    });
   }
 
   async findCategory(params: IProductCategory) {

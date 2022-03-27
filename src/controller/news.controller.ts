@@ -14,6 +14,7 @@ import {
   AddCategoryDTO,
   AddDTO,
   IdDTO,
+  ListCategoryDTO,
   ListDTO,
   UpdateCategoryDTO,
   UpdateDTO,
@@ -66,8 +67,18 @@ export class NewsController {
   }
 
   @Get('/getCategory')
-  async getCategory(@Query() query: UpdateCategoryDTO) {
+  async getCategory(@Query() query: ListCategoryDTO) {
     const res = await this.apiService.findCategory(query);
+    return {
+      success: true,
+      errorMessage: 'OK',
+      data: res,
+    };
+  }
+
+  @Get('/getCategoryList')
+  async getCategoryList() {
+    const res = await this.apiService.findCategoryList();
     return {
       success: true,
       errorMessage: 'OK',

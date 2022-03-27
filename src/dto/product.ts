@@ -74,12 +74,20 @@ export class AddCategoryDTO {
   name: string;
 }
 
+export class RecommendDTO {
+  @Rule(RuleType.string().required())
+  type: string;
+}
+
 export class ListDataDTO {
   @Rule(RuleType.string().required())
   type: string;
 
   @Rule(RuleType.number())
   texture_id: number;
+
+  @Rule(RuleType.number())
+  category_id: number;
 
   @Rule(RuleType.string())
   name: string;

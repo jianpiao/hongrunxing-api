@@ -185,7 +185,7 @@ export class HomeService {
   /** 新闻 */
   async findNews(params: INewsService) {
     const { type = 'web' } = params;
-    const res = await this.homeCaseModel.findOneBy({ type });
+    const res = await this.homeNewsModel.findOneBy({ type });
     const news = await this.newsModel.find({
       where: {
         home_id: res.id,
@@ -197,13 +197,13 @@ export class HomeService {
 
   async updateNews(params: INewsService) {
     const { id, title, desc, news, bg_text } = params;
-    const res = await this.homeCaseModel.findOneBy({ id });
+    const res = await this.homeNewsModel.findOneBy({ id });
 
     title && (res.title = title);
     desc && (res.desc = desc);
     bg_text && (res.bg_text = bg_text);
 
-    const saveRes = await this.homeCaseModel.save(res);
+    const saveRes = await this.homeNewsModel.save(res);
 
     if (news.length > 0) {
       const ids = news.map(e => e.id);

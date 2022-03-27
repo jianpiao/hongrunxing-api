@@ -26,4 +26,10 @@ export class CompanyInfo {
 
   @Column('varchar', { name: 'show_img', nullable: true })
   show_img: string | null;
+
+  @Column('varchar', { name: 'bg_text', nullable: true })
+  bg_text: string | null;
+
+  @Column('varchar', { name: 'title', nullable: true })
+  title: string | null;
 }

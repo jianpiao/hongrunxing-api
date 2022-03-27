@@ -13,7 +13,7 @@ export class AddDTO {
   @Rule(RuleType.string().required())
   title: string;
 
-  @Rule(RuleType.string())
+  @Rule(RuleType.string().required())
   username: string;
 
   @Rule(RuleType.string().required())

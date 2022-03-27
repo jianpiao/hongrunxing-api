@@ -50,6 +50,7 @@ export class NewsService {
       src = '',
       content = '',
       author = '',
+      type,
       pageSize,
       current,
       create_time = new Date('2022-01-01 00:00:00'),
@@ -66,7 +67,8 @@ export class NewsService {
       update_time: Between(new Date(update_time), new Date()),
       is_del: 0,
     };
-    id && (obj['id'] = id);
+    Number(id) && (obj['id'] = id);
+    Number(type) && (obj['type'] = type);
     const res = await this.newsModel.find({
       where: obj,
       order: {
@@ -90,6 +92,10 @@ export class NewsService {
 
   async findById(id: number) {
     const res = await this.newsModel.findOneBy({ id });
+    const category = await this.newsCategoryModel.findOneBy({
+      id: res.type,
+    });
+    res['category_name'] = category.name;
     return res;
   }
 
@@ -155,6 +161,18 @@ export class NewsService {
       total,
       list: res,
     };
+  }
+
+  async findCategoryList() {
+    const res = await this.newsCategoryModel.find({
+      where: {
+        is_del: 0,
+      },
+    });
+    return res.map(e => ({
+      id: e.id,
+      name: e.name,
+    }));
   }
 
   async updateCategory(params: INewsCategory) {

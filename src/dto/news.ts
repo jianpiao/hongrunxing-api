@@ -58,10 +58,16 @@ export class UpdateCategoryDTO extends IdDTO {
   name: string;
 }
 
-export class ListCategoryDTO extends UpdateCategoryDTO {
+export class ListCategoryDTO {
   @Rule(RuleType.number())
   current: number;
 
   @Rule(RuleType.number())
   pageSize: number;
+
+  @Rule(RuleType.number())
+  id: number;
+
+  @Rule(RuleType.string())
+  name: string;
 }

@@ -25,4 +25,10 @@ export class InfoDTO {
 
   @Rule(RuleType.string())
   show_img: string;
+
+  @Rule(RuleType.string())
+  title: string;
+
+  @Rule(RuleType.string())
+  bg_text: string;
 }
