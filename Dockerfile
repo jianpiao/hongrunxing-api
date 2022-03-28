@@ -1,0 +1,28 @@
+FROM node:12 AS build
+
+WORKDIR /app
+
+COPY . .
+
+RUN npm install
+
+RUN npm run build
+
+FROM node:14-alpine
+
+WORKDIR /app
+
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/bootstrap.js ./
+COPY --from=build /app/package.json ./
+
+RUN apk add --no-cache tzdata
+
+ENV TZ="Asia/Shanghai"
+
+RUN npm install --production
+
+# 如果端口更换，这边可以更新一下
+EXPOSE 7001
+
+CMD ["npm", "run", "start"]
