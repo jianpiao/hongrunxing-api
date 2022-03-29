@@ -9,7 +9,7 @@ export default {
   },
   orm: {
     type: 'mysql',
-    host: 'localhost',
+    host: '106.52.19.179',
     port: 3306,
     username: 'root',
     password: '123456',
