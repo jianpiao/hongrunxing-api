@@ -16,6 +16,7 @@
     "@midwayjs/upload": "3",
     "@midwayjs/validate": "3",
     "mysql2": "^2.3.3",
+    "node-rsa": "^1.1.1",
     "typeorm": "^0.3.0"
   },
   "devDependencies": {

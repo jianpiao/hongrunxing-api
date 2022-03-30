@@ -1,14 +1,59 @@
-import { Provide } from '@midwayjs/decorator';
-import { IUserOptions } from '../interface';
+import { Inject, Provide } from '@midwayjs/decorator';
+import { InjectEntityModel } from '@midwayjs/orm';
+import { Repository } from 'typeorm';
+import { User } from '../entity/User';
+// import NodeRSA from 'node-rsa';
+import { ILogger } from '@midwayjs/logger';
+
+/**
+ * 密码加密，最好方案包含一下三点：
+ * 1. 客户端对密码进行对称加密
+ * 2. 使用https，ssl密文传输
+ * 3. 利用ras非对称，公钥加密+私钥解密
+ * 4. 用BCrypt或者PBKDF2单向加密存储
+ * 参照：https://juejin.cn/post/7065624480537640997
+ */
+
+interface IUser {
+  id?: number;
+  type?: string;
+  is_del?: number;
+  username: string;
+  password: string;
+}
 
 @Provide()
 export class UserService {
-  async getUser(options: IUserOptions) {
-    return {
-      uid: options.uid,
-      username: 'mockedName',
-      phone: '12345678901',
-      email: 'xxx.xxx@xxx.com',
+  @InjectEntityModel(User)
+  userModel: Repository<User>;
+
+  @Inject()
+  logger: ILogger;
+
+  async getUserList() {
+    const obj = {
+      is_del: 0,
     };
+    const res = await this.userModel.find({
+      where: obj,
+    });
+    return res;
+  }
+
+  async getUser(id: number) {
+    const res = this.userModel.findOneBy({ id: Number(id) });
+    return res;
+  }
+
+  async login(params: IUser) {
+    const { username, password } = params;
+    const res = await this.userModel.findOneBy({
+      username,
+      password,
+    });
+    if (!res) {
+      this.logger.warn('用户名或者密码不正确');
+    }
+    return res;
   }
 }

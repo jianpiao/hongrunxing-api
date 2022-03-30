@@ -1,9 +1,10 @@
-import { Provide } from '@midwayjs/decorator';
+import { Inject, Provide } from '@midwayjs/decorator';
 import { InjectEntityModel } from '@midwayjs/orm';
 import { rmdirSync } from 'fs';
 import { join } from 'path';
 import { Repository } from 'typeorm';
 import { Carousel } from '../entity/Carousel';
+import { ILogger } from '@midwayjs/logger';
 
 export interface ICarousel {
   id?: number;
@@ -16,6 +17,9 @@ export interface ICarousel {
 
 @Provide()
 export class CarouselService {
+  @Inject()
+  logger: ILogger;
+
   @InjectEntityModel(Carousel)
   apiModel: Repository<Carousel>;
 

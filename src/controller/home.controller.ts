@@ -30,35 +30,39 @@ export class HomeController {
   @Get('/getProduct')
   async getProduct(@Query() query: GetDTO) {
     const res = await this.apiService.findAllProduct(query);
-    return {
-      success: true,
-      errorMessage: 'OK',
-      data: res,
-    };
+    return res;
   }
 
-  @Post('/updateProduct')
+  @Get('/admin/getProduct')
+  async getProductAdmin(@Query() query: GetDTO) {
+    const res = await this.apiService.findAllProduct(query);
+    return res;
+  }
+
+  @Post('/admin/updateProduct')
   @Validate()
   async updateProduct(@Body() body: UpdateProductDTO) {
     const res = await this.apiService.updateProduct(body);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 
   @Get('/getService')
   async getService(@Query() query: GetDTO) {
     const res = await this.apiService.findService(query);
-    return {
-      success: true,
-      errorMessage: 'OK',
-      data: res,
-    };
+    return res;
   }
 
-  @Post('/updateService')
+  @Get('/admin/getService')
+  async getServiceAdmin(@Query() query: GetDTO) {
+    const res = await this.apiService.findService(query);
+    return res;
+  }
+
+  @Post('/admin/updateService')
   @Validate()
   async updateService(@Body() body: UpdateServiceDTO) {
     const res = await this.apiService.updateService(body);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 
   @Get('/getCase')
@@ -71,11 +75,21 @@ export class HomeController {
     };
   }
 
-  @Post('/updateCase')
+  @Get('/admin/getCase')
+  async getCaseAdmin(@Query() query: GetDTO) {
+    const res = await this.apiService.findCase(query);
+    return {
+      success: true,
+      errorMessage: 'OK',
+      data: res,
+    };
+  }
+
+  @Post('/admin/updateCase')
   @Validate()
   async updateCase(@Body() body: UpdateCaseDTO) {
     const res = await this.apiService.updateCase(body);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 
   @Get('/getNews')
@@ -88,17 +102,27 @@ export class HomeController {
     };
   }
 
-  @Post('/updateNews')
+  @Get('/admin/getNews')
+  async getNewsAdmin(@Query() query: GetDTO) {
+    const res = await this.apiService.findNews(query);
+    return {
+      success: true,
+      errorMessage: 'OK',
+      data: res,
+    };
+  }
+
+  @Post('/admin/updateNews')
   @Validate()
   async updateNews(@Body() body: UpdateNewsDTO) {
     const res = await this.apiService.updateNews(body);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 
-  @Del('/delNews')
+  @Del('/admin/delNews')
   @Validate()
   async delNews(@Body() body: IdDTO) {
     const res = await this.apiService.delNews(body.id);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 }

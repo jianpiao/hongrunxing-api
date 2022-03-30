@@ -20,6 +20,7 @@ export interface IProduct {
   current?: number;
   pageSize?: number;
   is_del?: number;
+  recommend?: number;
 }
 
 export interface IProductTexture {
@@ -139,6 +140,7 @@ export class ProductService {
       type = 'product',
       price,
       pageSize,
+      recommend,
       current,
       create_time = new Date('2022-01-01 00:00:00'),
       update_time = new Date('2022-01-01 00:00:00'),
@@ -159,6 +161,9 @@ export class ProductService {
     };
     if (id) {
       obj['id'] = id;
+    }
+    if (recommend) {
+      obj['recommend'] = recommend;
     }
     const res = await this.productModel.find({
       where: obj,
@@ -185,7 +190,17 @@ export class ProductService {
   }
 
   async update(params: IProduct) {
-    const { id, name, desc, category, texture, type, content, price } = params;
+    const {
+      id,
+      name,
+      desc,
+      category,
+      texture,
+      type,
+      content,
+      price,
+      recommend,
+    } = params;
     const res = await this.productModel.findOneBy({ id });
 
     name && (res.name = name);
@@ -195,6 +210,7 @@ export class ProductService {
     texture && (res.texture = texture);
     type && (res.type = type);
     price && (res.price = price);
+    (recommend === 0 || recommend === 1) && (res.recommend = recommend);
 
     const saveRes = await this.productModel.save(res);
     return saveRes;
@@ -254,15 +270,16 @@ export class ProductService {
     } = params;
     const _pageSize = (pageSize && Number(pageSize)) || 10;
     const _current = (current && Number(current)) || 1;
+    const obj = {
+      id,
+      type,
+      name: Like(`%${name}%`),
+      create_time: Between(new Date(create_time), new Date()),
+      update_time: Between(new Date(update_time), new Date()),
+      is_del: 0,
+    };
     const res = await this.productCategoryModel.find({
-      where: {
-        id,
-        type,
-        name: Like(`%${name}%`),
-        create_time: Between(new Date(create_time), new Date()),
-        update_time: Between(new Date(update_time), new Date()),
-        is_del: 0,
-      },
+      where: obj,
       order: {
         id: 'ASC',
       },
@@ -270,9 +287,7 @@ export class ProductService {
       take: _pageSize,
     });
     const total = await this.productCategoryModel.count({
-      where: {
-        is_del: 0,
-      },
+      where: obj,
     });
     return {
       current: _current,
@@ -326,16 +341,17 @@ export class ProductService {
     } = params;
     const _pageSize = (pageSize && Number(pageSize)) || 10;
     const _current = (current && Number(current)) || 1;
+    const obj = {
+      id,
+      type,
+      name: Like(`%${name}%`),
+      father_id: father_id && Like(father_id),
+      create_time: Between(new Date(create_time), new Date()),
+      update_time: Between(new Date(update_time), new Date()),
+      is_del: 0,
+    };
     const res = await this.productTextureModel.find({
-      where: {
-        id,
-        type,
-        name: Like(`%${name}%`),
-        father_id: father_id && Like(father_id),
-        create_time: Between(new Date(create_time), new Date()),
-        update_time: Between(new Date(update_time), new Date()),
-        is_del: 0,
-      },
+      where: obj,
       order: {
         id: 'ASC',
       },
@@ -343,9 +359,7 @@ export class ProductService {
       take: _pageSize,
     });
     const total = await this.productTextureModel.count({
-      where: {
-        is_del: 0,
-      },
+      where: obj,
     });
     return {
       current: _current,
@@ -384,7 +398,6 @@ export class ProductService {
   async findCategoryTree() {
     const texture = await this.productTextureModel.find();
     const fatherIds = [...new Set(texture.map(e => e.father_id))];
-    console.log('fatherIds', fatherIds.values[0]);
     const list: IOptions[] = [];
     for (let i = 0; i < fatherIds.length; i++) {
       const res = await this.productCategoryModel.findOneBy({

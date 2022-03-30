@@ -78,9 +78,7 @@ export class NewsService {
       take: _pageSize,
     });
     const total = await this.newsModel.count({
-      where: {
-        is_del: 0,
-      },
+      where: obj,
     });
     return {
       current: _current,

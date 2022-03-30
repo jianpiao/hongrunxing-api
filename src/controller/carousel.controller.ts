@@ -23,25 +23,26 @@ export class CarouselController {
   @Get('/get')
   async get(@Query() query: ListDTO) {
     const res = await this.apiService.findAll(query);
-    return {
-      success: true,
-      errorMessage: 'OK',
-      data: res,
-    };
+    return res;
   }
 
-  @Put('/add')
+  @Get('/admin/get')
+  async getAdmin(@Query() query: ListDTO) {
+    const res = await this.apiService.findAll(query);
+    return res;
+  }
+
+  @Put('/admin/add')
   @Validate()
   async add(@Body() body: AddDTO) {
-    console.log(body);
     const res = await this.apiService.save(body.list);
     return { success: true, errorMessage: 'OK', data: res };
   }
 
-  @Del('/del')
+  @Del('/admin/del')
   @Validate()
   async del(@Body() body: IdDTO) {
     const res = await this.apiService.delete(body.id);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 }

@@ -27,6 +27,9 @@ export class Product {
   @Column('int', { name: 'is_del' })
   is_del: number;
 
+  @Column('int', { name: 'recommend' })
+  recommend: number;
+
   @Column('int', {
     name: 'price',
     nullable: true,

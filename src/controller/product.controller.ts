@@ -37,11 +37,13 @@ export class ProductController {
   @Get('/get')
   async get(@Query() query: ListDTO) {
     const res = await this.apiService.findAll(query);
-    return {
-      success: true,
-      errorMessage: 'OK',
-      data: res,
-    };
+    return res;
+  }
+
+  @Get('/admin/get')
+  async getAdmin(@Query() query: ListDTO) {
+    const res = await this.apiService.findAll(query);
+    return res;
   }
 
   @Get('/getRecommend')
@@ -49,128 +51,134 @@ export class ProductController {
     const res = await this.apiService.findAll({
       current: 1,
       pageSize: 6,
+      recommend: 1,
       ...query,
     });
-    return {
-      success: true,
-      errorMessage: 'OK',
-      data: res,
-    };
+    return res;
   }
 
   @Get('/getList')
   async getList(@Query() query: ListDataDTO) {
     const res = await this.apiService.getList(query);
-    return {
-      success: true,
-      errorMessage: 'OK',
-      data: res,
-    };
+    return res;
   }
 
   @Get('/get_by_id')
   async getById(@Query() query: IdDTO) {
     const res = await this.apiService.findById(query.id);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 
-  @Put('/add')
+  @Put('/admin/add')
   @Validate()
   async add(@Body() body: AddDTO) {
     const res = await this.apiService.save(body);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 
-  @Post('/update')
+  @Post('/admin/update')
   @Validate()
   async update(@Body() body: UpdateDTO) {
     const res = await this.apiService.update(body);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 
-  @Del('/del')
+  @Del('/admin/del')
   @Validate()
   async del(@Body() body: IdDTO) {
     const res = await this.apiService.delete(body.id);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 
   @Get('/getCategoryList')
   async getCategoryList() {
     const res = await this.apiService.findCategoryList();
-    return {
-      success: true,
-      errorMessage: 'OK',
-      data: res,
-    };
+    return res;
+  }
+
+  @Get('/admin/getCategoryList')
+  async getCategoryListAdmin() {
+    const res = await this.apiService.findCategoryList();
+    return res;
   }
 
   @Get('/getCategory')
   async getCategory(@Query() query: ListCategoryDTO) {
     const res = await this.apiService.findCategory(query);
-    return {
-      success: true,
-      errorMessage: 'OK',
-      data: res,
-    };
+    return res;
   }
 
-  @Put('/addCategory')
+  @Get('/admin/getCategory')
+  async getCategoryAdmin(@Query() query: ListCategoryDTO) {
+    const res = await this.apiService.findCategory(query);
+    return res;
+  }
+
+  @Put('/admin/addCategory')
   @Validate()
   async addCategory(@Body() body: AddCategoryDTO) {
     const res = await this.apiService.saveCategory(body);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 
-  @Post('/updateCategory')
+  @Post('/admin/updateCategory')
   @Validate()
   async updateCategory(@Body() body: UpdateCategoryDTO) {
     const res = await this.apiService.updateCategory(body);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 
-  @Del('/delCategory')
+  @Del('/admin/delCategory')
   @Validate()
   async delCategory(@Body() body: IdDTO) {
     const res = await this.apiService.deleteCategory(body.id);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 
   @Get('/getTexture')
   async getTexture(@Query() query: ListTextureDTO) {
     const res = await this.apiService.findTexture(query);
-    return {
-      success: true,
-      errorMessage: 'OK',
-      data: res,
-    };
+    return res;
   }
 
-  @Put('/addTexture')
+  @Get('/admin/getTexture')
+  async getTextureAdmin(@Query() query: ListTextureDTO) {
+    const res = await this.apiService.findTexture(query);
+    return res;
+  }
+
+  @Put('/admin/addTexture')
   @Validate()
   async addTexture(@Body() body: AddTextureDTO) {
     const res = await this.apiService.saveTexture(body);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 
-  @Post('/updateTexture')
+  @Post('/admin/updateTexture')
   @Validate()
   async updateTexture(@Body() body: UpdateTextureDTO) {
     const res = await this.apiService.updateTexture(body);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 
-  @Del('/delTexture')
+  @Del('/admin/delTexture')
   @Validate()
   async delTexture(@Body() body: IdDTO) {
     const res = await this.apiService.deleteTexture(body.id);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 
   @Get('/getCategoryTree')
   @Validate()
   async getCategoryTree() {
     const res = await this.apiService.findCategoryTree();
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
+  }
+
+  @Get('/admin/getCategoryTree')
+  @Validate()
+  async getCategoryTreeAdmin() {
+    const res = await this.apiService.findCategoryTree();
+    return res;
   }
 }

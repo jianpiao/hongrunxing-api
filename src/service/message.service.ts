@@ -61,11 +61,8 @@ export class MessageService {
       skip: (_current - 1) * _pageSize,
       take: _pageSize,
     });
-    console.log('res', res);
     const total = await this.messageModel.count({
-      where: {
-        is_del: 0,
-      },
+      where: obj,
     });
     return {
       current: _current,

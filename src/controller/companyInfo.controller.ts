@@ -15,18 +15,20 @@ export class CarouselController {
   @Get('/get')
   async get() {
     const res = await this.apiService.findAll();
-    return {
-      success: true,
-      errorMessage: 'OK',
-      data: res,
-    };
+    return res;
   }
 
-  @Post('/update')
+  @Get('/admin/get')
+  async getAdmin() {
+    const res = await this.apiService.findAll();
+    return res;
+  }
+
+  @Post('/admin/update')
   @Validate()
   async update(@Body() body: InfoDTO) {
     console.log('body', body);
     const res = await this.apiService.update(body);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 }

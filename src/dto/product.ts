@@ -56,6 +56,9 @@ export class UpdateDTO extends IdDTO {
 
   @Rule(RuleType.number())
   price: number;
+
+  @Rule(RuleType.number())
+  recommend: number;
 }
 
 export class ListDTO extends UpdateDTO {
