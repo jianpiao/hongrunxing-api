@@ -9,7 +9,7 @@ then
     echo "hongrunxing-api容器已存在"
     docker container stop $containerName
     docker container rm $containerName
-    docker rmi $containerName
+    docker rmi $containerName node:14-alpine node:14
 else
     echo "容器不存在，开始执行构建"
 fi

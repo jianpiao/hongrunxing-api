@@ -22,6 +22,8 @@ ENV TZ="Asia/Shanghai"
 
 RUN npm install --production
 
+RUN npm install pm2 -g
+
 # 如果端口更换，这边可以更新一下
 EXPOSE 7001
 
