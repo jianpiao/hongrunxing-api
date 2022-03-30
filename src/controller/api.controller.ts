@@ -1,4 +1,4 @@
-import { Inject, Controller, Post, Files } from '@midwayjs/decorator';
+import { Inject, Controller, Post, Files, Get } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import { ApiService } from '../service/api.service';
 
@@ -9,6 +9,11 @@ export class APIController {
 
   @Inject()
   apiService: ApiService;
+
+  @Get()
+  async get() {
+    return '宏润兴';
+  }
 
   @Post('/upload')
   async upload(@Files() files) {
