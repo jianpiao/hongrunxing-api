@@ -1,5 +1,5 @@
 import { MidwayHttpError } from '@midwayjs/core';
-import { Inject, Controller, Post, Body } from '@midwayjs/decorator';
+import { Inject, Controller, Post, Body, Get } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import { ILogger } from '@midwayjs/logger';
 import { Validate } from '@midwayjs/validate';
@@ -38,6 +38,14 @@ export class LoginController {
       type: res.type,
       id: res.id,
     };
+  }
+
+  @Get('/currentUser')
+  @Validate()
+  async currentUser() {
+    const user = this.ctx.session.user;
+    const res = await this.userService.getUser(user.id);
+    return res;
   }
 
   @Post('/outLogin')
