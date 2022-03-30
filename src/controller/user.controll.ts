@@ -5,7 +5,7 @@ import { IdDTO } from '../dto/user';
 import { SessionMiddleware } from '../middleware/cookie.middleware';
 import { UserService } from '../service/user.service';
 
-@Controller('/api')
+@Controller('/api/user')
 export class UserController {
   @Inject()
   ctx: Context;
