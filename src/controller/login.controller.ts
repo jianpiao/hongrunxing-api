@@ -8,7 +8,7 @@ import { UserService } from '../service/user.service';
 // import { aesEncrypt } from '../utils/secret';
 
 @Controller('/api/login')
-export class UserController {
+export class LoginController {
   @Inject()
   ctx: Context;
 

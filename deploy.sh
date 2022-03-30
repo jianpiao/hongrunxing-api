@@ -2,16 +2,18 @@
 
 containerName="hongrunxing-api"
 
-docker inspect -f '{{.Name}}' $containerName
+docker inspect -f '{{.Name}}' containerName
 
-if [ $? ==0 ];
+echo "搜索结果：$?"
+
+if [ $? == 0 ];
 then
     echo "hongrunxing-api容器已存在"
-    docker container stop $containerName
-    docker container rm $containerName
-    docker rmi $containerName node:14-alpine node:14
+    docker container stop containerName
+    docker container rm containerName
+    docker rmi containerName node:14-alpine node:14
 else
-    echo "容器不存在，开始执行构建"
+    echo "$containerName容器不存在，开始执行构建"
 fi
 
 docker build -t hongrunxing-api .
