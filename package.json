@@ -1,5 +1,5 @@
 {
-  "name": "my-midway-project",
+  "name": "hongrunxing-api",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -43,7 +43,8 @@
     "lint:fix": "mwts fix",
     "ci": "npm run cov",
     "build": "midway-bin build -c",
-    "model": "sh updateModel.sh"
+    "model": "sh updateModel.sh",
+    "push": "sh push.sh"
   },
   "midway-bin-clean": [
     ".vscode/.tsbuildinfo",
