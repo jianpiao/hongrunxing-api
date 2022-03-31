@@ -20,3 +20,26 @@ jobs:
         name: smallzip7799/hongrunxing-api
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 部署服务器
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: 22
+          script: |
+            echo "拉取smallzip7799/hongrunxing-api镜像"
+            docker pull smallzip7799/hongrunxing-api
+            docker inspect -f '{{.Name}}' hongrunxing-api
+            if [ $? == 0 ] ;then
+              echo "hongrunxing-api容器已存在，需要先删除，下面开始执行删除操作："
+              docker container stop hongrunxing-api
+              echo "容器已停止"
+              docker container rm hongrunxing-api
+              echo "容器已删除"
+            else
+              echo "hongrunxing-api容器不存在，直接构建"
+            fi
+            docker run -d -p 7001:7001 --name hongrunxing-api smallzip7799/hongrunxing-api
