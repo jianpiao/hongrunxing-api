@@ -9,11 +9,11 @@ echo "搜索结果：$?"
 if [ $? == 0 ];
 then
     echo "hongrunxing-api容器已存在"
-    docker container stop $containerName
-    docker container rm $containerName
-    docker rmi $containerName node:14-alpine node:14
+    docker container stop hongrunxing-api
+    docker container rm hongrunxing-api
+    docker rmi hongrunxing-api node:14-alpine node:14
 else
-    echo "$containerName容器不存在，开始执行构建"
+    echo "hongrunxing-api容器不存在，开始执行构建"
 fi
 
 docker build -t hongrunxing-api .
