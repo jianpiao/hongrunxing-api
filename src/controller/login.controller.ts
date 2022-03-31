@@ -3,7 +3,7 @@ import { Inject, Controller, Post, Body, Get } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import { ILogger } from '@midwayjs/logger';
 import { Validate } from '@midwayjs/validate';
-import { IdDTO, LoginDTO, PhoneDTO } from '../dto/user';
+import { LoginDTO, PhoneDTO } from '../dto/user';
 import { UserService } from '../service/user.service';
 // import { aesEncrypt } from '../utils/secret';
 
