@@ -15,6 +15,9 @@ export class User {
   @Column('varchar', { name: 'type', nullable: true, length: 255 })
   type: string | null;
 
+  @Column('varchar', { name: 'avatar', nullable: true, length: 255 })
+  avatar: string | null;
+
   @Column('int', { name: 'is_del', default: () => "'0'" })
   is_del: number;
 

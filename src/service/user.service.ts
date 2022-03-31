@@ -20,6 +20,7 @@ interface IUser {
   is_del?: number;
   username: string;
   password: string;
+  avatar?: string;
 }
 
 @Provide()
@@ -37,12 +38,22 @@ export class UserService {
     const res = await this.userModel.find({
       where: obj,
     });
-    return res;
+    return res.map(e => ({
+      id: e.id,
+      username: e.username,
+      type: e.type,
+      avatar: e.avatar,
+    }));
   }
 
   async getUser(id: number) {
-    const res = this.userModel.findOneBy({ id: Number(id) });
-    return res;
+    const res = await this.userModel.findOneBy({ id: Number(id) });
+    return {
+      id: res.id,
+      username: res.username,
+      type: res.type,
+      avatar: res.avatar,
+    };
   }
 
   async login(params: IUser) {
@@ -54,6 +65,11 @@ export class UserService {
     if (!res) {
       this.logger.warn('用户名或者密码不正确');
     }
-    return res;
+    return {
+      id: res.id,
+      username: res.username,
+      type: res.type,
+      avatar: res.avatar,
+    };
   }
 }

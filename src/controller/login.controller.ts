@@ -50,8 +50,9 @@ export class LoginController {
 
   @Post('/outLogin')
   @Validate()
-  async outLogin(@Body() body: IdDTO) {
-    console.log('退出', body.id);
+  async outLogin() {
+    // 清除session回话
+    this.ctx.session = null;
     return '退出成功';
   }
 
