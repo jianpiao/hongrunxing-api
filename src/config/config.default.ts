@@ -15,7 +15,7 @@ export default {
     password: '123456',
     database: 'hongrunxing',
     synchronize: false, // 如果第一次使用，不存在表，有同步的需求可以写 true
-    logging: true,
+    logging: false,
     dateStrings: true,
   },
   validate: {
@@ -23,11 +23,12 @@ export default {
       allowUnknown: true, // 全局生效
     },
   },
-  // cors: { // 跨域
-  //   credentials: false,
-  //   origin: '*',
-  //   allowHeaders: '*',
-  // },
+  cors: {
+    // 跨域
+    credentials: false,
+    origin: '*',
+    allowHeaders: '*',
+  },
   upload: {
     mode: 'file',
     fileSize: '10mb',
@@ -42,6 +43,6 @@ export default {
       '.avi',
     ],
     tmpdir: join(__dirname, '../..', 'public/uploadFiles'),
-    cleanTimeout: 24 * 60 * 60 * 1000,
+    cleanTimeout: 0, // 0代表不清理
   },
 } as MidwayConfig;

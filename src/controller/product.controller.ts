@@ -91,14 +91,8 @@ export class ProductController {
   }
 
   @Get('/getCategoryList')
-  async getCategoryList() {
-    const res = await this.apiService.findCategoryList();
-    return res;
-  }
-
-  @Get('/admin/getCategoryList')
-  async getCategoryListAdmin() {
-    const res = await this.apiService.findCategoryList();
+  async getCategoryList(@Query() query: RecommendDTO) {
+    const res = await this.apiService.findCategoryList(query.type);
     return res;
   }
 

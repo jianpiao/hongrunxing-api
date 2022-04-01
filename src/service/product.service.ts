@@ -106,8 +106,11 @@ export class ProductService {
       type: type,
       is_del: 0,
     };
-    Number(texture_id) && (obj['texture'] = texture_id);
-    Number(category_id) && (obj['category'] = category_id);
+    if (Number(category_id)) {
+      obj['category'] = category_id;
+    } else {
+      Number(texture_id) && (obj['texture'] = texture_id);
+    }
     Number(price) && (obj['price'] = price);
     const res = await this.productModel.find({
       where: obj,
@@ -229,14 +232,16 @@ export class ProductService {
     return res.id;
   }
 
-  async findCategoryList() {
+  async findCategoryList(type: string) {
     const category = await this.productCategoryModel.find({
       where: {
+        type,
         is_del: 0,
       },
     });
     const texture = await this.productTextureModel.find({
       where: {
+        type,
         is_del: 0,
       },
     });
@@ -249,13 +254,11 @@ export class ProductService {
       }
       return cur;
     }, {});
-    return category.map(e => {
-      return {
-        id: e.id,
-        name: e.name,
-        children: obj[e.id] || [],
-      };
-    });
+    return category.map(e => ({
+      id: e.id,
+      name: e.name,
+      children: obj[e.id] || [],
+    }));
   }
 
   async findCategory(params: IProductCategory) {
