@@ -74,11 +74,7 @@ export class HomeController {
   @Get('/admin/getCase')
   async getCaseAdmin(@Query() query: GetDTO) {
     const res = await this.apiService.findCase(query);
-    return {
-      success: true,
-      errorMessage: 'OK',
-      data: res,
-    };
+    return res;
   }
 
   @Post('/admin/updateCase')
@@ -91,21 +87,13 @@ export class HomeController {
   @Get('/getNews')
   async getNews(@Query() query: GetDTO) {
     const res = await this.apiService.findNews(query);
-    return {
-      success: true,
-      errorMessage: 'OK',
-      data: res,
-    };
+    return res;
   }
 
   @Get('/admin/getNews')
   async getNewsAdmin(@Query() query: GetDTO) {
     const res = await this.apiService.findNews(query);
-    return {
-      success: true,
-      errorMessage: 'OK',
-      data: res,
-    };
+    return res;
   }
 
   @Post('/admin/updateNews')

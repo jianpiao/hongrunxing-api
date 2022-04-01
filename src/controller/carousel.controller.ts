@@ -36,7 +36,7 @@ export class CarouselController {
   @Validate()
   async add(@Body() body: AddDTO) {
     const res = await this.apiService.save(body.list);
-    return { success: true, errorMessage: 'OK', data: res };
+    return res;
   }
 
   @Del('/admin/del')
