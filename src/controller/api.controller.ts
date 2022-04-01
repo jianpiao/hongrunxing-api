@@ -18,7 +18,7 @@ export class APIController {
   @Post('/upload')
   async upload(@Files() files) {
     console.log(files);
-    const domain = 'http://127.0.0.1:7001/public/uploadFiles';
+    const domain = 'http://8.142.139.235:7001/public/uploadFiles';
     const filePath = files[0].data.split('uploadFiles')[1];
     const path = domain + filePath;
     return {

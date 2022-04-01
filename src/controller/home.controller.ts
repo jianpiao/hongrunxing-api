@@ -68,11 +68,7 @@ export class HomeController {
   @Get('/getCase')
   async getCase(@Query() query: GetDTO) {
     const res = await this.apiService.findCase(query);
-    return {
-      success: true,
-      errorMessage: 'OK',
-      data: res,
-    };
+    return res;
   }
 
   @Get('/admin/getCase')

@@ -15,7 +15,7 @@ export default {
     password: '123456',
     database: 'hongrunxing',
     synchronize: false, // 如果第一次使用，不存在表，有同步的需求可以写 true
-    logging: false,
+    logging: true,
     dateStrings: true,
   },
   validate: {
