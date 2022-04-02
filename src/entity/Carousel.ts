@@ -1,4 +1,9 @@
-import { Column, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { EntityModel } from '@midwayjs/orm';
 
 @EntityModel('carousel', { schema: 'hongrunxing' })
@@ -23,7 +28,7 @@ export class Carousel {
     comment: '创建时间',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  @UpdateDateColumn({
+  @CreateDateColumn({
     name: 'create_time',
     type: 'timestamp',
   })

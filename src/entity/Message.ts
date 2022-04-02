@@ -1,4 +1,9 @@
-import { Column, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { EntityModel } from '@midwayjs/orm';
 
 @EntityModel('message', { schema: 'hongrunxing' })
@@ -51,7 +56,7 @@ export class Message {
     nullable: true,
     comment: '创建时间',
   })
-  @UpdateDateColumn({
+  @CreateDateColumn({
     name: 'create_time',
     type: 'timestamp',
   })

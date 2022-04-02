@@ -1,4 +1,4 @@
-import { Column } from 'typeorm';
+import { Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { EntityModel } from '@midwayjs/orm';
 
 @EntityModel('home_news', { schema: 'hongrunxing' })
@@ -19,12 +19,20 @@ export class HomeNews {
   desc: string | null;
 
   @Column('timestamp', { name: 'create_time', nullable: true })
+  @CreateDateColumn({
+    name: 'create_time',
+    type: 'timestamp',
+  })
   create_time: Date | null;
 
   @Column('timestamp', {
     name: 'update_time',
     nullable: true,
     default: () => 'CURRENT_TIMESTAMP',
+  })
+  @UpdateDateColumn({
+    name: 'update_time',
+    type: 'timestamp',
   })
   update_time: Date | null;
 }

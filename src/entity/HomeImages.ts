@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -18,6 +19,10 @@ export class HomeImages {
   src: string | null;
 
   @Column('timestamp', { name: 'create_time', nullable: true })
+  @CreateDateColumn({
+    name: 'create_time',
+    type: 'timestamp',
+  })
   create_time: Date | null;
 
   @Column('timestamp', {

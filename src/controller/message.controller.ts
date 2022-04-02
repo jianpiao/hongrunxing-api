@@ -45,7 +45,7 @@ export class MessageController {
     return res;
   }
 
-  @Put('/admin/add')
+  @Put('/add')
   @Validate()
   async add(@Body() body: AddDTO) {
     const res = await this.apiService.save(body);

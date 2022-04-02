@@ -9,6 +9,9 @@ export class ViewDTO {
 }
 
 export class ViewCountDTO {
-  @Rule(RuleType.string().required())
+  @Rule(RuleType.string())
   type: string;
+
+  @Rule(RuleType.string())
+  create_time: string;
 }

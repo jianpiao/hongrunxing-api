@@ -17,18 +17,22 @@ export default {
     synchronize: false, // 如果第一次使用，不存在表，有同步的需求可以写 true
     logging: false,
     dateStrings: true,
+    timezone: '+08:00',
   },
   validate: {
     validationOptions: {
       allowUnknown: true, // 全局生效
     },
   },
-  cors: {
-    // 跨域
-    credentials: false,
-    origin: '*',
-    allowHeaders: '*',
-  },
+  cors:
+    process.env.MIDWAY_SERVER_ENV === 'prod'
+      ? {}
+      : {
+          // 跨域
+          credentials: false,
+          origin: '*',
+          allowHeaders: '*',
+        },
   upload: {
     mode: 'file',
     fileSize: '10mb',

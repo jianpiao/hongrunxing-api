@@ -126,7 +126,6 @@ export class HomeService {
 
     title && (res.title = title);
     desc && (res.desc = desc);
-
     const saveRes = await this.homeServiceModel.save(res);
 
     if (images && images.length > 0) {

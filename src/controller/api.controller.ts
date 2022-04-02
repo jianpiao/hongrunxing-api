@@ -34,7 +34,7 @@ export class APIController {
     };
   }
 
-  @Post('/admin/view')
+  @Post('/view')
   async addView(@Body() body: ViewDTO) {
     await this.apiService.addView(body);
     return '';

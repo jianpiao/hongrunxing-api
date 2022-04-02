@@ -1,4 +1,4 @@
-import { Column, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { EntityModel } from '@midwayjs/orm';
 
 @EntityModel('views', { schema: 'hongrunxing' })
@@ -6,13 +6,7 @@ export class Views {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column('timestamp', {
-    name: 'create_time',
-    nullable: true,
-    comment: '创建时间',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  @UpdateDateColumn({
+  @CreateDateColumn({
     name: 'create_time',
     type: 'timestamp',
   })

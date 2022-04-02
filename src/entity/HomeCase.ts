@@ -1,4 +1,9 @@
-import { Column, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { EntityModel } from '@midwayjs/orm';
 
 @EntityModel('home-case', { schema: 'hongrunxing' })
@@ -16,6 +21,10 @@ export class HomeCase {
   desc: string | null;
 
   @Column('timestamp', { name: 'create_time', nullable: true })
+  @CreateDateColumn({
+    name: 'create_time',
+    type: 'timestamp',
+  })
   create_time: Date | null;
 
   @Column('timestamp', {
