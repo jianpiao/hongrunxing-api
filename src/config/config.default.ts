@@ -12,9 +12,9 @@ export default {
     host: '8.142.139.235',
     port: 3306,
     username: 'root',
-    password: '123456',
+    password: 'Hongrunxing_2022.',
     database: 'hongrunxing',
-    synchronize: false, // 如果第一次使用，不存在表，有同步的需求可以写 true
+    synchronize: true, // 如果第一次使用，不存在表，有同步的需求可以写 true
     logging: false,
     dateStrings: true,
     timezone: '+08:00',
