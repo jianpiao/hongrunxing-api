@@ -14,7 +14,7 @@ export default {
     username: 'root',
     password: 'Hongrunxing_2022.',
     database: 'hongrunxing',
-    synchronize: true, // 如果第一次使用，不存在表，有同步的需求可以写 true
+    synchronize: false, // 如果第一次使用，不存在表，有同步的需求可以写 true
     logging: false,
     dateStrings: true,
     timezone: '+08:00',
