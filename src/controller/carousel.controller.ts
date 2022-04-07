@@ -26,19 +26,19 @@ export class CarouselController {
 
   @Get('/get')
   async get(@Query() query: ListDTO) {
-    // const key =
-    //   query.type === 'web' ? 'getWebCarouselList' : 'getH5CarouselList';
+    const key =
+      query.type === 'web' ? 'getWebCarouselList' : 'getH5CarouselList';
 
-    // // 获取数据
-    // let result = await this.redisService.get(key);
+    // 获取数据
+    let result = await this.redisService.get(key);
 
-    // if (!result) {
-    //   const res = await this.apiService.findAll(query);
-    //   await this.redisService.set(key, JSON.stringify(res), 'ex', 60 * 5);
-    //   result = JSON.stringify(res);
-    // }
-    const res = await this.apiService.findAll(query);
-    return res;
+    if (!result) {
+      const res = await this.apiService.findAll(query);
+      await this.redisService.set(key, JSON.stringify(res), 'ex', 60 * 5);
+      result = JSON.stringify(res);
+    }
+
+    return result && JSON.parse(result);
   }
 
   @Get('/admin/get')
