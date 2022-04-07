@@ -1,6 +1,8 @@
 import { MidwayConfig } from '@midwayjs/core';
 import { join } from 'path';
 
+const passw = 'Hongrunxing_2022.';
+
 export default {
   // use for cookie sign key, should change to your own and keep security
   keys: 'hongrunginx_666',
@@ -12,12 +14,20 @@ export default {
     host: '8.142.139.235',
     port: 3306,
     username: 'root',
-    password: 'Hongrunxing_2022.',
+    password: passw,
     database: 'hongrunxing',
     synchronize: false, // 如果第一次使用，不存在表，有同步的需求可以写 true
     logging: false,
     dateStrings: true,
     timezone: '+08:00',
+  },
+  redis: {
+    client: {
+      port: 6379, // Redis port
+      host: '127.0.0.1', // Redis host
+      password: passw,
+      db: 0,
+    },
   },
   validate: {
     validationOptions: {

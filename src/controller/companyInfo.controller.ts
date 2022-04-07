@@ -3,6 +3,7 @@ import { Context } from '@midwayjs/koa';
 import { Validate } from '@midwayjs/validate';
 import { InfoDTO } from '../dto/componyInfo';
 import { CompanyInfoService } from '../service/companyInfo.service';
+import { RedisService } from '@midwayjs/redis';
 
 @Controller('/api/company_info')
 export class CarouselController {
@@ -12,10 +13,25 @@ export class CarouselController {
   @Inject()
   apiService: CompanyInfoService;
 
+  @Inject()
+  redisService: RedisService;
+
   @Get('/get')
   async get() {
-    const res = await this.apiService.findAll();
-    return res;
+    let result = await this.redisService.get('getCompanyInfo');
+
+    if (!result) {
+      const res = await this.apiService.findAll();
+      await this.redisService.set(
+        'getCompanyInfo',
+        JSON.stringify(res),
+        'ex',
+        60 * 5
+      );
+      result = JSON.stringify(res);
+    }
+
+    return result && JSON.parse(result);
   }
 
   @Get('/admin/get')

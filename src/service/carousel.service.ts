@@ -37,11 +37,29 @@ export class CarouselService {
     // 删除没用的数据
     // await this.apiModel.save(notInRow);
 
-    const addIds = body
+    const addList = body
       .filter(e => e.id === 0)
       .map(e => ({ path: e.path, type: e.type }));
+
+    // 删除不用的数据
+    const originIds = body.filter(e => e.id !== 0).map(e => e.id);
+    let list = await this.apiModel.find({
+      where: {
+        type: body.length > 0 ? body[0].type : '',
+        is_del: 0,
+      },
+    });
+    list = list
+      .filter(e => !originIds.includes(e.id))
+      .map(e => ({
+        ...e,
+        is_del: 1,
+      }));
+
     // 新增数据
-    await this.apiModel.save(addIds);
+    await this.apiModel.save(addList);
+    // 更新旧数据
+    await this.apiModel.save(list);
     return '处理成功';
   }
 

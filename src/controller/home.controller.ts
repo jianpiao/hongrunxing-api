@@ -18,6 +18,7 @@ import {
 } from '../dto/home';
 import { HomeService } from '../service/home.service';
 import { IdDTO } from '../dto/carousel';
+import { RedisService } from '@midwayjs/redis';
 
 @Controller('/api/home')
 export class HomeController {
@@ -27,10 +28,22 @@ export class HomeController {
   @Inject()
   apiService: HomeService;
 
+  @Inject()
+  redisService: RedisService;
+
   @Get('/getProduct')
   async getProduct(@Query() query: GetDTO) {
-    const res = await this.apiService.findAllProduct(query);
-    return res;
+    const key = query.type === 'web' ? 'getWebProduct' : 'getH5Product';
+
+    let result = await this.redisService.get(key);
+
+    if (!result) {
+      const res = await this.apiService.findAllProduct(query);
+      await this.redisService.set(key, JSON.stringify(res), 'ex', 60 * 5);
+      result = JSON.stringify(res);
+    }
+
+    return result && JSON.parse(result);
   }
 
   @Get('/admin/getProduct')
@@ -48,8 +61,17 @@ export class HomeController {
 
   @Get('/getService')
   async getService(@Query() query: GetDTO) {
-    const res = await this.apiService.findService(query);
-    return res;
+    const key = query.type === 'web' ? 'getWebService' : 'getH5Service';
+
+    let result = await this.redisService.get(key);
+
+    if (!result) {
+      const res = await this.apiService.findService(query);
+      await this.redisService.set(key, JSON.stringify(res), 'ex', 60 * 5);
+      result = JSON.stringify(res);
+    }
+
+    return result && JSON.parse(result);
   }
 
   @Get('/admin/getService')
@@ -67,8 +89,17 @@ export class HomeController {
 
   @Get('/getCase')
   async getCase(@Query() query: GetDTO) {
-    const res = await this.apiService.findCase(query);
-    return res;
+    const key = query.type === 'web' ? 'getWebCase' : 'getH5Case';
+
+    let result = await this.redisService.get(key);
+
+    if (!result) {
+      const res = await this.apiService.findCase(query);
+      await this.redisService.set(key, JSON.stringify(res), 'ex', 60 * 5);
+      result = JSON.stringify(res);
+    }
+
+    return result && JSON.parse(result);
   }
 
   @Get('/admin/getCase')
@@ -86,8 +117,16 @@ export class HomeController {
 
   @Get('/getNews')
   async getNews(@Query() query: GetDTO) {
-    const res = await this.apiService.findNews(query);
-    return res;
+    const key = query.type === 'web' ? 'getWebNews' : 'getH5News';
+    let result = await this.redisService.get(key);
+
+    if (!result) {
+      const res = await this.apiService.findNews(query);
+      await this.redisService.set(key, JSON.stringify(res), 'ex', 60 * 5);
+      result = JSON.stringify(res);
+    }
+
+    return result && JSON.parse(result);
   }
 
   @Get('/admin/getNews')
