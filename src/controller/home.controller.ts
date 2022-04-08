@@ -39,7 +39,7 @@ export class HomeController {
 
     if (!result) {
       const res = await this.apiService.findAllProduct(query);
-      await this.redisService.set(key, JSON.stringify(res), 'ex', 60 * 5);
+      await this.redisService.set(key, JSON.stringify(res), 'EX', 60 * 5);
       result = JSON.stringify(res);
     }
 
@@ -67,7 +67,7 @@ export class HomeController {
 
     if (!result) {
       const res = await this.apiService.findService(query);
-      await this.redisService.set(key, JSON.stringify(res), 'ex', 60 * 5);
+      await this.redisService.set(key, JSON.stringify(res), 'EX', 60 * 5);
       result = JSON.stringify(res);
     }
 
@@ -95,7 +95,7 @@ export class HomeController {
 
     if (!result) {
       const res = await this.apiService.findCase(query);
-      await this.redisService.set(key, JSON.stringify(res), 'ex', 60 * 5);
+      await this.redisService.set(key, JSON.stringify(res), 'EX', 60 * 5);
       result = JSON.stringify(res);
     }
 
@@ -122,7 +122,7 @@ export class HomeController {
 
     if (!result) {
       const res = await this.apiService.findNews(query);
-      await this.redisService.set(key, JSON.stringify(res), 'ex', 60 * 5);
+      await this.redisService.set(key, JSON.stringify(res), 'EX', 60 * 5);
       result = JSON.stringify(res);
     }
 

@@ -35,7 +35,7 @@ export class PhoneController {
       await this.redisService.set(
         'getPhoneList',
         JSON.stringify(res),
-        'ex',
+        'EX',
         60 * 5
       );
       result = JSON.stringify(res);

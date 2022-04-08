@@ -25,7 +25,7 @@ export class CarouselController {
       await this.redisService.set(
         'getCompanyInfo',
         JSON.stringify(res),
-        'ex',
+        'EX',
         60 * 5
       );
       result = JSON.stringify(res);
