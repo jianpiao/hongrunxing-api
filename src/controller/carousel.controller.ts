@@ -34,7 +34,7 @@ export class CarouselController {
 
     if (!result) {
       const res = await this.apiService.findAll(query);
-      await this.redisService.set(key, JSON.stringify(res), 'ex', 60 * 5);
+      await this.redisService.set(key, JSON.stringify(res), 'EX', 10);
       result = JSON.stringify(res);
     }
 
