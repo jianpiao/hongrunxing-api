@@ -190,6 +190,13 @@ export class HomeService {
         home_id: res.id,
       },
     });
+    news.forEach(e => {
+      e.content = e.content
+        .replace(/<\/?.+?\/?>/g, '')
+        .replace(/\s/g, '')
+        .replace(/&nbsp;/g, '')
+        .slice(0, 300);
+    });
     res['news'] = news;
     return res;
   }
