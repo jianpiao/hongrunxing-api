@@ -32,6 +32,13 @@ export class NewsController {
   @Get('/get')
   async get(@Query() query: ListDTO) {
     const res = await this.apiService.findAll(query);
+    res.list.forEach(e => {
+      e.content = e.content
+        .replace(/<\/?.+?\/?>/g, '')
+        .replace(/\s/g, '')
+        .replace(/&nbsp;/g, '')
+        .slice(0, 300);
+    });
     return res;
   }
 
