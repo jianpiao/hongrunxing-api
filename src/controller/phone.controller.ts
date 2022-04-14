@@ -12,7 +12,7 @@ import { Context } from '@midwayjs/koa';
 import { Validate } from '@midwayjs/validate';
 import { AddDTO, IdDTO, ListDTO, UpdateDTO } from '../dto/phone';
 import { PhoneService } from '../service/phone.service';
-// import { RedisService } from '@midwayjs/redis';
+import { RedisService } from '@midwayjs/redis';
 
 @Controller('/api/phone')
 export class PhoneController {
@@ -22,29 +22,26 @@ export class PhoneController {
   @Inject()
   apiService: PhoneService;
 
-  // @Inject()
-  // redisService: RedisService;
+  @Inject()
+  redisService: RedisService;
 
   @Get('/get')
   async get(@Query() query: ListDTO) {
-    // // 获取数据
-    // let result = await this.redisService.get('getPhoneList');
+    // 获取数据
+    let result = await this.redisService.get('getPhoneList');
 
-    // if (!result) {
-    //   const res = await this.apiService.findAll(query);
-    //   await this.redisService.set(
-    //     'getPhoneList',
-    //     JSON.stringify(res),
-    //     'EX',
-    //     60 * 5
-    //   );
-    //   result = JSON.stringify(res);
-    // }
+    if (!result) {
+      const res = await this.apiService.findAll(query);
+      await this.redisService.set(
+        'getPhoneList',
+        JSON.stringify(res),
+        'EX',
+        60 * 5
+      );
+      result = JSON.stringify(res);
+    }
 
-    // return result && JSON.parse(result);
-
-    const res = await this.apiService.findAll(query);
-    return res;
+    return result && JSON.parse(result);
   }
 
   @Get('/admin/get')
