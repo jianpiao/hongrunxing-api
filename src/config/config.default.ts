@@ -24,7 +24,7 @@ export default {
   redis: {
     client: {
       port: 6379, // Redis port
-      host: process.env.MIDWAY_SERVER_ENV === 'prod' ? '0.0.0.0' : '127.0.0.1', // Redis host
+      host: '0.0.0.0', // Redis host
       password: passw,
       db: 0,
     },
