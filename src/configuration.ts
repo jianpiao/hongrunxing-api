@@ -22,7 +22,7 @@ import { SessionMiddleware } from './middleware/cookie.middleware';
     upload,
     validate,
     staticFile,
-    // redis,
+    // redis, // 使用redis
     crossDomain,
     {
       component: info,
