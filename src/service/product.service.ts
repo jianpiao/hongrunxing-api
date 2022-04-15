@@ -4,6 +4,7 @@ import { Product } from '../entity/Product';
 import { ProductCategory } from '../entity/ProductCategory';
 import { ProductTexture } from '../entity/ProductTexture';
 import { Between, Like, Repository } from 'typeorm';
+import { ProductImages } from '../entity/ProductImages';
 
 export interface IProduct {
   id?: number;
@@ -11,6 +12,7 @@ export interface IProduct {
   type?: string;
   desc?: string;
   src?: string;
+  images?: Array<{ id: number; src: string; father_id: number; type: string }>;
   content?: string;
   category?: number;
   texture?: number;
@@ -77,11 +79,25 @@ export class ProductService {
   @InjectEntityModel(ProductTexture)
   productTextureModel: Repository<ProductTexture>;
 
+  @InjectEntityModel(ProductImages)
+  productImagesModel: Repository<ProductImages>;
+
   /**  ~~~~~~~ 产品和案例 ~~~~~~~~ **/
 
   // save
   async save(body: IProduct) {
+    const images = body.images || [];
+    body.src = body.images.length > 0 ? body.images[0].src : ''; // 取第一张图作为主图
+    delete body.images;
     const res: IProduct = await this.productModel.save(body);
+    for (let i = 0; i < images.length; i++) {
+      const params = {
+        type: body.type,
+        src: images[i].src,
+        father_id: res.id,
+      };
+      await this.productImagesModel.save(params);
+    }
     return res.id;
   }
 
@@ -179,6 +195,15 @@ export class ProductService {
     const total = await this.productModel.count({
       where: obj,
     });
+    // 查找图片
+    for (let i = 0; i < res.length; i++) {
+      res[i]['images'] = await this.productImagesModel.find({
+        where: {
+          father_id: res[i].id,
+          is_del: 0,
+        },
+      });
+    }
     return {
       current: _current,
       pageSize: _pageSize,
@@ -203,6 +228,8 @@ export class ProductService {
       content,
       price,
       recommend,
+      src,
+      images,
     } = params;
     const res = await this.productModel.findOneBy({ id });
 
@@ -214,6 +241,27 @@ export class ProductService {
     type && (res.type = type);
     price && (res.price = price);
     (recommend === 0 || recommend === 1) && (res.recommend = recommend);
+    src && (res.src = images.length > 0 ? images[0].src : src);
+
+    const imageList = await this.productImagesModel.find({
+      where: {
+        is_del: 0,
+        father_id: id,
+      },
+    });
+    const fatherIds = images.map(e => e.father_id);
+    // 删除原始数据
+    const delList = imageList
+      .filter(e => e.id !== 0)
+      .filter(e => !fatherIds.includes(e.id))
+      .map(e => ({ ...e, is_del: 1 }));
+    // 添加新数据
+    const addList = images.filter(e => e.id === 0);
+
+    // 修改旧数据
+    await this.productImagesModel.save(delList);
+    // 添加数据
+    await this.productImagesModel.save(addList);
 
     const saveRes = await this.productModel.save(res);
     return saveRes;

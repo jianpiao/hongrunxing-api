@@ -19,6 +19,9 @@ export class AddDTO {
   @Rule(RuleType.string().required())
   src: string;
 
+  @Rule(RuleType.array().required())
+  images: Array<{ id: number; src: string; father_id: number; type: string }>;
+
   @Rule(RuleType.string().required())
   content: string;
 
