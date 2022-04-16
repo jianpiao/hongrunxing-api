@@ -217,6 +217,7 @@ export class ProductService {
     res['images'] = await this.productImagesModel.find({
       where: {
         father_id: res.id,
+        is_del: 0,
       },
     });
     return res;
