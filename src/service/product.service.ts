@@ -214,6 +214,9 @@ export class ProductService {
 
   async findById(id: number) {
     const res = await this.productModel.findOneBy({ id });
+    res['images'] = await this.productImagesModel.findOneBy({
+      father_id: res.id,
+    });
     return res;
   }
 
