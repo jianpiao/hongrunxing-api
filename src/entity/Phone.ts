@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -11,6 +12,7 @@ export class Phone {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
+  @Index()
   @Column('varchar', { name: 'phone', nullable: true, length: 255 })
   phone: string | null;
 
@@ -38,6 +40,7 @@ export class Phone {
   })
   update_time: Date | null;
 
+  @Index()
   @Column('varchar', { name: 'name', nullable: true, length: 255 })
   name: string | null;
 

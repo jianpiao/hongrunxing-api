@@ -11,7 +11,7 @@ export default {
   },
   orm: {
     type: 'mysql',
-    host: '8.142.139.235',
+    host: 'www.hongrunxingcarpet.com',
     port: 3306,
     username: 'root',
     password: passw,
