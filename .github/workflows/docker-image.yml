@@ -28,6 +28,8 @@ jobs:
           password: ${{ secrets.HOST_PASSWORD }}
           port: 22
           script: |
+            echo "删除静态资源文件"
+            rm -rf public
             echo "备份public静态资源"
             docker cp hongrunxing-api:/app/public .
 
@@ -53,4 +55,4 @@ jobs:
             docker image prune -a -f
 
             echo "更新静态资源"
-            docker cp public hongrunxing-api:/app/public
+            docker cp public hongrunxing-api:/app
