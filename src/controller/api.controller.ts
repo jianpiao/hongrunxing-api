@@ -26,7 +26,7 @@ export class APIController {
 
   @Post('/upload')
   async upload(@Files() files) {
-    const domain = 'http://www.hongrunxingcarpet.com/api/public/uploadFiles';
+    const domain = 'http://www.hongrunxingcarpet.com/public/uploadFiles';
     const filePath = files[0].data.split('uploadFiles')[1];
     const path = domain + filePath;
     return {

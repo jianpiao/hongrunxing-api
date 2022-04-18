@@ -31,8 +31,8 @@ export class AddDTO {
   @Rule(RuleType.number().required())
   texture: number;
 
-  @Rule(RuleType.number().required())
-  price: number;
+  // @Rule(RuleType.number().required())
+  // price: number;
 }
 
 export class UpdateDTO extends IdDTO {

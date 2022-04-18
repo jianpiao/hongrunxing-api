@@ -60,4 +60,12 @@ export default {
     tmpdir: join(__dirname, '../..', 'public/uploadFiles'),
     cleanTimeout: 0, // 0代表不清理
   },
+  staticFile: {
+    dirs: {
+      default: {
+        prefix: '/public',
+        dir: 'public/uploadFiles/',
+      },
+    },
+  },
 } as MidwayConfig;
