@@ -247,7 +247,7 @@ export class ProductService {
     type && (res.type = type);
     price && (res.price = price);
     (recommend === 0 || recommend === 1) && (res.recommend = recommend);
-    src && (res.src = images.length > 0 ? images[0].src : src);
+    res.src = images.length > 0 ? images[0].src : src;
 
     const imageList = await this.productImagesModel.find({
       where: {
@@ -255,11 +255,10 @@ export class ProductService {
         father_id: id,
       },
     });
-    const fatherIds = images.map(e => e.father_id);
+    const delIds = images.filter(e => e.id !== 0).map(e => e.id);
     // 删除原始数据
     const delList = imageList
-      .filter(e => e.id !== 0)
-      .filter(e => !fatherIds.includes(e.id))
+      .filter(e => !delIds.includes(e.id))
       .map(e => ({ ...e, is_del: 1 }));
     // 添加新数据
     const addList = images.filter(e => e.id === 0);
