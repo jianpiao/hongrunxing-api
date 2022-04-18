@@ -64,7 +64,7 @@ export default {
     dirs: {
       default: {
         prefix: '/public',
-        dir: 'public/uploadFiles/',
+        dir: 'public',
       },
     },
   },
