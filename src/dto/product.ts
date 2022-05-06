@@ -16,7 +16,7 @@ export class AddDTO {
   @Rule(RuleType.string().required())
   desc: string;
 
-  @Rule(RuleType.string().required())
+  @Rule(RuleType.string())
   src: string;
 
   @Rule(RuleType.array().required())
