@@ -50,7 +50,7 @@ export class NewsService {
       src = '',
       content = '',
       author = '',
-      type,
+      // type,
       pageSize,
       current,
       create_time = new Date('2022-01-01 00:00:00'),
@@ -68,7 +68,7 @@ export class NewsService {
       is_del: 0,
     };
     Number(id) && (obj['id'] = id);
-    Number(type) && (obj['type'] = type);
+    // Number(type) && (obj['type'] = type);
     const res = await this.newsModel.find({
       where: obj,
       order: {
