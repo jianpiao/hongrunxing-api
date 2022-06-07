@@ -32,4 +32,7 @@ export class CompanyInfo {
 
   @Column('varchar', { name: 'title', nullable: true })
   title: string | null;
+
+  @Column('longtext', { name: 'culture', nullable: true })
+  culture: string | null;
 }

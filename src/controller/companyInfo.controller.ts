@@ -46,7 +46,6 @@ export class CarouselController {
   @Post('/admin/update')
   @Validate()
   async update(@Body() body: InfoDTO) {
-    console.log('body', body);
     const res = await this.apiService.update(body);
     return res;
   }

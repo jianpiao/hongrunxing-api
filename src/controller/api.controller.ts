@@ -26,7 +26,11 @@ export class APIController {
 
   @Post('/upload')
   async upload(@Files() files) {
-    const domain = 'http://www.hongrunxingcarpet.com/public/uploadFiles';
+    const base =
+      process.env.NODE_ENV === 'production'
+        ? 'http://www.hongrunxingcarpet.com'
+        : 'http://127.0.0.1:7001';
+    const domain = `${base}/public/uploadFiles`;
     const filePath = files[0].data.split('uploadFiles')[1];
     const path = domain + filePath;
     return {

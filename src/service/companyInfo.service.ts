@@ -14,6 +14,7 @@ export interface ICompanyInfo {
   show_img?: string;
   title?: string;
   bg_text?: string;
+  culture?: string;
 }
 
 @Provide()

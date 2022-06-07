@@ -31,4 +31,7 @@ export class InfoDTO {
 
   @Rule(RuleType.string())
   bg_text: string;
+
+  @Rule(RuleType.string())
+  culture: string;
 }
