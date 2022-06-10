@@ -353,6 +353,57 @@ export class ProductService {
     };
   }
 
+  async findCategoryMap(params: IProductCategory) {
+    const {
+      id,
+      name = '',
+      pageSize,
+      type = 'product',
+      current,
+      create_time = new Date('2022-01-01 00:00:00'),
+      update_time = new Date('2022-01-01 00:00:00'),
+    } = params;
+    const _pageSize = (pageSize && Number(pageSize)) || 10;
+    const _current = (current && Number(current)) || 1;
+    const obj = {
+      id,
+      type,
+      name: Like(`%${name}%`),
+      create_time: Between(new Date(create_time), new Date()),
+      update_time: Between(new Date(update_time), new Date()),
+      is_del: 0,
+    };
+    const res = await this.productCategoryModel.find({
+      where: obj,
+      order: {
+        id: 'ASC',
+      },
+      skip: (_current - 1) * _pageSize,
+      take: _pageSize,
+    });
+    const total = await this.productCategoryModel.count({
+      where: obj,
+    });
+
+    const texture = await this.productTextureModel.find({
+      where: {
+        type,
+        is_del: 0,
+      },
+    });
+
+    for (let i = 0; i < res.length; i++) {
+      res[i]['children'] = texture.filter(e => e.father_id === res[i].id);
+    }
+
+    return {
+      current: _current,
+      pageSize: _pageSize,
+      total,
+      list: res,
+    };
+  }
+
   async updateCategory(params: IProductCategory) {
     const { id, name } = params;
     const res = await this.productCategoryModel.findOneBy({ id });
@@ -380,7 +431,11 @@ export class ProductService {
 
   /** ~~~~~~~~~~~产品材质~~~~~~~~~~~~~ */
   async saveTexture(body: IProductTexture) {
-    const res: IProductTexture = await this.productTextureModel.save(body);
+    const params = {
+      ...body,
+      is_del: 0,
+    };
+    const res: IProductTexture = await this.productTextureModel.save(params);
     return res.id;
   }
 

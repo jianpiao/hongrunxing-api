@@ -108,6 +108,12 @@ export class ProductController {
     return res;
   }
 
+  @Get('/admin/getCategoryMap')
+  async getCategoryMap(@Query() query: ListCategoryDTO) {
+    const res = await this.apiService.findCategoryMap(query);
+    return res;
+  }
+
   @Put('/admin/addCategory')
   @Validate()
   async addCategory(@Body() body: AddCategoryDTO) {
