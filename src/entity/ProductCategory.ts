@@ -41,4 +41,7 @@ export class ProductCategory {
 
   @Column('varchar', { name: 'type', nullable: true, length: 255 })
   type: string | null;
+
+  @Column('varchar', { name: 'src', nullable: true, length: 255 })
+  src: string | null;
 }

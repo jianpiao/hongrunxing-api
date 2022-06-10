@@ -28,6 +28,7 @@ export interface IProduct {
 export interface IProductTexture {
   id?: number;
   name?: string;
+  src?: string;
   is_del?: number;
   father_id?: number;
   type: string;
@@ -40,6 +41,7 @@ export interface IProductTexture {
 export interface IProductCategory {
   id?: number;
   name?: string;
+  src?: string;
   is_del?: number;
   type: string;
   update_time?: number;
@@ -310,6 +312,7 @@ export class ProductService {
     return category.map(e => ({
       id: e.id,
       name: e.name,
+      src: e.src,
       children: obj[e.id] || [],
     }));
   }
@@ -318,6 +321,7 @@ export class ProductService {
     const {
       id,
       name = '',
+      src = '',
       pageSize,
       type = 'product',
       current,
@@ -330,6 +334,7 @@ export class ProductService {
       id,
       type,
       name: Like(`%${name}%`),
+      src: Like(`%${src}%`),
       create_time: Between(new Date(create_time), new Date()),
       update_time: Between(new Date(update_time), new Date()),
       is_del: 0,
@@ -357,6 +362,7 @@ export class ProductService {
     const {
       id,
       name = '',
+      src = '',
       pageSize,
       type = 'product',
       current,
@@ -369,6 +375,7 @@ export class ProductService {
       id,
       type,
       name: Like(`%${name}%`),
+      src: Like(`%${src}%`),
       create_time: Between(new Date(create_time), new Date()),
       update_time: Between(new Date(update_time), new Date()),
       is_del: 0,
@@ -405,9 +412,10 @@ export class ProductService {
   }
 
   async updateCategory(params: IProductCategory) {
-    const { id, name } = params;
+    const { id, name, src } = params;
     const res = await this.productCategoryModel.findOneBy({ id });
     name && (res.name = name);
+    src && (res.src = src);
     const saveRes = await this.productCategoryModel.save(res);
     return saveRes;
   }
@@ -443,6 +451,7 @@ export class ProductService {
     const {
       id,
       name = '',
+      src = '',
       pageSize,
       father_id,
       current,
@@ -456,6 +465,7 @@ export class ProductService {
       id,
       type,
       name: Like(`%${name}%`),
+      src: Like(`%${src}%`),
       father_id: father_id && Like(father_id),
       create_time: Between(new Date(create_time), new Date()),
       update_time: Between(new Date(update_time), new Date()),
@@ -481,9 +491,10 @@ export class ProductService {
   }
 
   async updateTexture(params: IProductTexture) {
-    const { id, name, father_id } = params;
+    const { id, name, src, father_id } = params;
     const res = await this.productTextureModel.findOneBy({ id });
     name && (res.name = name);
+    src && (res.src = src);
     father_id && (res.father_id = father_id);
     const saveRes = await this.productTextureModel.save(res);
     return saveRes;
