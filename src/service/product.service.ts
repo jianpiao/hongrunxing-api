@@ -90,6 +90,7 @@ export class ProductService {
   async save(body: IProduct) {
     const images = body.images || [];
     body.src = body.images.length > 0 ? body.images[0].src : ''; // 取第一张图作为主图
+    body.recommend = 1;
     delete body.images;
     const res: IProduct = await this.productModel.save(body);
     for (let i = 0; i < images.length; i++) {
@@ -518,23 +519,31 @@ export class ProductService {
   }
 
   async findCategoryTree() {
-    const texture = await this.productTextureModel.find();
-    const fatherIds = [...new Set(texture.map(e => e.father_id))];
+    const texture = await this.productTextureModel.find({
+      where: {
+        is_del: 0,
+        type: 'product',
+      },
+    });
+    const category = await this.productCategoryModel.find({
+      where: {
+        is_del: 0,
+        type: 'product',
+      },
+    });
+
     const list: IOptions[] = [];
-    for (let i = 0; i < fatherIds.length; i++) {
-      const res = await this.productCategoryModel.findOneBy({
-        id: fatherIds[i],
-      });
-      list.push({
-        label: res.name,
-        value: res.id,
-        children: [],
-      });
-    }
-    for (let i = 0; i < list.length; i++) {
-      list[i].children = texture
-        .filter(e => e.father_id === list[i].value)
-        .map(e => ({ label: e.name, value: e.id }));
+    for (let i = 0; i < category.length; i++) {
+      const res = texture.filter(e => e.father_id === category[i].id);
+      if (res.length > 0) {
+        list.push({
+          label: category[i].name,
+          value: category[i].id,
+          children: texture
+            .filter(e => e.father_id === category[i].id)
+            .map(e => ({ label: e.name, value: e.id })),
+        });
+      }
     }
     return list;
   }
