@@ -91,6 +91,7 @@ export class ProductService {
     const images = body.images || [];
     body.src = body.images.length > 0 ? body.images[0].src : ''; // 取第一张图作为主图
     body.recommend = 1;
+    body.is_del = 0;
     delete body.images;
     const res: IProduct = await this.productModel.save(body);
     for (let i = 0; i < images.length; i++) {
