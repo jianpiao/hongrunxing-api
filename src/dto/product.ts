@@ -117,6 +117,9 @@ export class UpdateCategoryDTO extends IdDTO {
 
   @Rule(RuleType.string().required())
   name: string;
+
+  @Rule(RuleType.string().required())
+  src: string;
 }
 
 export class ListCategoryDTO extends UpdateCategoryDTO {
@@ -136,6 +139,9 @@ export class AddTextureDTO {
 
   @Rule(RuleType.number().required())
   father_id: number;
+
+  @Rule(RuleType.string())
+  src: string;
 }
 
 export class UpdateTextureDTO extends IdDTO {
@@ -147,6 +153,9 @@ export class UpdateTextureDTO extends IdDTO {
 
   @Rule(RuleType.number())
   father_id: number;
+
+  @Rule(RuleType.string())
+  src: string;
 }
 
 export class ListTextureDTO extends UpdateTextureDTO {

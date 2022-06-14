@@ -102,7 +102,7 @@ export class ProductController {
     return res;
   }
 
-  @Get('/admin/getCategory')
+  @Get('/admin/category')
   async getCategoryAdmin(@Query() query: ListCategoryDTO) {
     const res = await this.apiService.findCategory(query);
     return res;
@@ -114,21 +114,21 @@ export class ProductController {
     return res;
   }
 
-  @Put('/admin/addCategory')
+  @Post('/admin/category')
   @Validate()
   async addCategory(@Body() body: AddCategoryDTO) {
     const res = await this.apiService.saveCategory(body);
     return res;
   }
 
-  @Post('/admin/updateCategory')
+  @Put('/admin/category')
   @Validate()
   async updateCategory(@Body() body: UpdateCategoryDTO) {
     const res = await this.apiService.updateCategory(body);
     return res;
   }
 
-  @Del('/admin/delCategory')
+  @Del('/admin/category')
   @Validate()
   async delCategory(@Body() body: IdDTO) {
     const res = await this.apiService.deleteCategory(body.id);
@@ -141,27 +141,27 @@ export class ProductController {
     return res;
   }
 
-  @Get('/admin/getTexture')
+  @Get('/admin/texture')
   async getTextureAdmin(@Query() query: ListTextureDTO) {
     const res = await this.apiService.findTexture(query);
     return res;
   }
 
-  @Put('/admin/addTexture')
+  @Put('/admin/texture')
   @Validate()
-  async addTexture(@Body() body: AddTextureDTO) {
-    const res = await this.apiService.saveTexture(body);
-    return res;
-  }
-
-  @Post('/admin/updateTexture')
-  @Validate()
-  async updateTexture(@Body() body: UpdateTextureDTO) {
+  async addTexture(@Body() body: UpdateTextureDTO) {
     const res = await this.apiService.updateTexture(body);
     return res;
   }
 
-  @Del('/admin/delTexture')
+  @Post('/admin/texture')
+  @Validate()
+  async updateTexture(@Body() body: AddTextureDTO) {
+    const res = await this.apiService.saveTexture(body);
+    return res;
+  }
+
+  @Del('/admin/texture')
   @Validate()
   async delTexture(@Body() body: IdDTO) {
     const res = await this.apiService.deleteTexture(body.id);
