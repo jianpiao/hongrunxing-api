@@ -5,8 +5,8 @@ import {
   Query,
   Post,
   Body,
-  Put,
   Del,
+  Patch,
 } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import { Validate } from '@midwayjs/validate';
@@ -69,14 +69,14 @@ export class ProductController {
     return res;
   }
 
-  @Put('/admin/add')
+  @Post('/admin/add')
   @Validate()
   async add(@Body() body: AddDTO) {
     const res = await this.apiService.save(body);
     return res;
   }
 
-  @Post('/admin/update')
+  @Patch('/admin/update')
   @Validate()
   async update(@Body() body: UpdateDTO) {
     const res = await this.apiService.update(body);
@@ -121,7 +121,7 @@ export class ProductController {
     return res;
   }
 
-  @Put('/admin/category')
+  @Patch('/admin/category')
   @Validate()
   async updateCategory(@Body() body: UpdateCategoryDTO) {
     const res = await this.apiService.updateCategory(body);
@@ -147,7 +147,7 @@ export class ProductController {
     return res;
   }
 
-  @Put('/admin/texture')
+  @Patch('/admin/texture')
   @Validate()
   async addTexture(@Body() body: UpdateTextureDTO) {
     const res = await this.apiService.updateTexture(body);
