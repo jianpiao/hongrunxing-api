@@ -3,7 +3,7 @@ import { Context } from '@midwayjs/koa';
 import { Validate } from '@midwayjs/validate';
 import { InfoDTO } from '../dto/componyInfo';
 import { CompanyInfoService } from '../service/companyInfo.service';
-// import { RedisService } from '@midwayjs/redis';
+import { RedisService } from '@midwayjs/redis';
 
 @Controller('/api/company_info')
 export class CarouselController {
@@ -13,28 +13,24 @@ export class CarouselController {
   @Inject()
   apiService: CompanyInfoService;
 
-  // @Inject()
-  // redisService: RedisService;
+  @Inject()
+  redisService: RedisService;
 
   @Get('/get')
   async get() {
-    // let result = await this.redisService.get('getCompanyInfo');
+    const key = 'getCompanyInfo';
+    let result = await this.redisService.get(key);
 
-    // if (!result) {
-    //   const res = await this.apiService.findAll();
-    //   await this.redisService.set(
-    //     'getCompanyInfo',
-    //     JSON.stringify(res),
-    //     'EX',
-    //     60 * 5
-    //   );
-    //   result = JSON.stringify(res);
-    // }
+    if (!result) {
+      const res = await this.apiService.findAll();
+      await this.redisService.set(key, JSON.stringify(res), 'EX', 60 * 5);
+      result = JSON.stringify(res);
+    }
 
-    // return result && JSON.parse(result);
+    return result && JSON.parse(result);
 
-    const res = await this.apiService.findAll();
-    return res;
+    // const res = await this.apiService.findAll();
+    // return res;
   }
 
   @Get('/admin/get')

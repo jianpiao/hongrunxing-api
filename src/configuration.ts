@@ -13,7 +13,7 @@ import * as crossDomain from '@midwayjs/cross-domain';
 import { ILogger } from '@midwayjs/logger';
 import { FormatMiddleware } from './middleware/format.middleware';
 import { SessionMiddleware } from './middleware/cookie.middleware';
-// import * as redis from '@midwayjs/redis';
+import * as redis from '@midwayjs/redis';
 
 @Configuration({
   imports: [
@@ -22,7 +22,7 @@ import { SessionMiddleware } from './middleware/cookie.middleware';
     upload,
     validate,
     staticFile,
-    // redis, // 使用redis
+    redis, // 使用redis
     crossDomain,
     {
       component: info,
