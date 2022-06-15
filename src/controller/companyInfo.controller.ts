@@ -18,19 +18,19 @@ export class CarouselController {
 
   @Get('/get')
   async get() {
-    const key = 'getCompanyInfo';
-    let result = await this.redisService.get(key);
+    // const key = 'getCompanyInfo';
+    // let result = await this.redisService.get(key);
 
-    if (!result) {
-      const res = await this.apiService.findAll();
-      await this.redisService.set(key, JSON.stringify(res), 'EX', 60 * 5);
-      result = JSON.stringify(res);
-    }
+    // if (!result) {
+    //   const res = await this.apiService.findAll();
+    //   await this.redisService.set(key, JSON.stringify(res), 'EX', 60 * 5);
+    //   result = JSON.stringify(res);
+    // }
 
-    return result && JSON.parse(result);
+    // return result && JSON.parse(result);
 
-    // const res = await this.apiService.findAll();
-    // return res;
+    const res = await this.apiService.findAll();
+    return res;
   }
 
   @Get('/admin/get')
