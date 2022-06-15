@@ -5,8 +5,9 @@ import {
   Query,
   Post,
   Body,
-  Put,
   Del,
+  Param,
+  Patch,
 } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import { Validate } from '@midwayjs/validate';
@@ -48,47 +49,36 @@ export class NewsController {
     return res;
   }
 
-  @Get('/get_by_id')
-  async getById(@Query() query: IdDTO) {
-    const res = await this.apiService.findById(query.id);
+  @Get('/:id')
+  async getById(@Param() params: IdDTO) {
+    const res = await this.apiService.findById(params.id);
     return res;
   }
 
-  @Get('/admin/get_by_id')
-  async getByIdAdmin(@Query() query: IdDTO) {
-    const res = await this.apiService.findById(query.id);
-    return res;
-  }
-
-  @Put('/admin/add')
+  @Post('/admin')
   @Validate()
   async add(@Body() body: AddDTO) {
     const res = await this.apiService.save(body);
     return res;
   }
 
-  @Post('/admin/update')
+  @Patch('/admin/:id')
   @Validate()
-  async update(@Body() body: UpdateDTO) {
-    const res = await this.apiService.update(body);
+  async update(@Param() params: IdDTO, @Body() body: UpdateDTO) {
+    const res = await this.apiService.update(params.id, body);
     return res;
   }
 
-  @Del('/admin/del')
+  @Del('/admin/:id')
   @Validate()
-  async del(@Body() body: IdDTO) {
-    const res = await this.apiService.delete(body.id);
+  async del(@Param() params: IdDTO) {
+    const res = await this.apiService.delete(params.id);
     return res;
   }
 
+  // ---------- 分类管理 ----------
   @Get('/getCategory')
   async getCategory(@Query() query: ListCategoryDTO) {
-    const res = await this.apiService.findCategory(query);
-    return res;
-  }
-
-  @Get('/admin/getCategory')
-  async getCategoryAdmin(@Query() query: ListCategoryDTO) {
     const res = await this.apiService.findCategory(query);
     return res;
   }
@@ -99,24 +89,33 @@ export class NewsController {
     return res;
   }
 
-  @Put('/admin/addCategory')
+  @Get('/admin/category')
+  async getCategoryAdmin(@Query() query: ListCategoryDTO) {
+    const res = await this.apiService.findCategory(query);
+    return res;
+  }
+
+  @Post('/admin/category')
   @Validate()
   async addCategory(@Body() body: AddCategoryDTO) {
     const res = await this.apiService.saveCategory(body);
     return res;
   }
 
-  @Post('/admin/updateCategory')
+  @Patch('/admin/category/:id')
   @Validate()
-  async updateCategory(@Body() body: UpdateCategoryDTO) {
-    const res = await this.apiService.updateCategory(body);
+  async updateCategory(
+    @Param() params: IdDTO,
+    @Body() body: UpdateCategoryDTO
+  ) {
+    const res = await this.apiService.updateCategory(params.id, body);
     return res;
   }
 
-  @Del('/admin/delCategory')
+  @Del('/admin/category/:id')
   @Validate()
-  async delCategory(@Body() body: IdDTO) {
-    const res = await this.apiService.deleteCategory(body.id);
+  async delCategory(@Param() params: IdDTO) {
+    const res = await this.apiService.deleteCategory(params.id);
     return res;
   }
 }

@@ -7,6 +7,7 @@ import {
   Body,
   Del,
   Patch,
+  Param,
 } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import { Validate } from '@midwayjs/validate';
@@ -63,30 +64,30 @@ export class ProductController {
     return res;
   }
 
-  @Get('/get_by_id')
-  async getById(@Query() query: IdDTO) {
-    const res = await this.apiService.findById(query.id);
+  @Get('/:id')
+  async getById(@Param() params: IdDTO) {
+    const res = await this.apiService.findById(params.id);
     return res;
   }
 
-  @Post('/admin/add')
+  @Post('/admin')
   @Validate()
   async add(@Body() body: AddDTO) {
     const res = await this.apiService.save(body);
     return res;
   }
 
-  @Patch('/admin/update')
+  @Patch('/admin/:id')
   @Validate()
-  async update(@Body() body: UpdateDTO) {
-    const res = await this.apiService.update(body);
+  async update(@Body() body: UpdateDTO, @Param() params: IdDTO) {
+    const res = await this.apiService.update(params.id, body);
     return res;
   }
 
-  @Del('/admin/del')
+  @Del('/admin/:id')
   @Validate()
-  async del(@Body() body: IdDTO) {
-    const res = await this.apiService.delete(body.id);
+  async del(@Param() params: IdDTO) {
+    const res = await this.apiService.delete(params.id);
     return res;
   }
 
@@ -121,17 +122,20 @@ export class ProductController {
     return res;
   }
 
-  @Patch('/admin/category')
+  @Patch('/admin/category/:id')
   @Validate()
-  async updateCategory(@Body() body: UpdateCategoryDTO) {
-    const res = await this.apiService.updateCategory(body);
+  async updateCategory(
+    @Body() body: UpdateCategoryDTO,
+    @Param() params: IdDTO
+  ) {
+    const res = await this.apiService.updateCategory(params.id, body);
     return res;
   }
 
-  @Del('/admin/category')
+  @Del('/admin/category/:id')
   @Validate()
-  async delCategory(@Body() body: IdDTO) {
-    const res = await this.apiService.deleteCategory(body.id);
+  async delCategory(@Param() params: IdDTO) {
+    const res = await this.apiService.deleteCategory(params.id);
     return res;
   }
 
@@ -147,10 +151,10 @@ export class ProductController {
     return res;
   }
 
-  @Patch('/admin/texture')
+  @Patch('/admin/texture/:id')
   @Validate()
-  async addTexture(@Body() body: UpdateTextureDTO) {
-    const res = await this.apiService.updateTexture(body);
+  async addTexture(@Body() body: UpdateTextureDTO, @Param() params: IdDTO) {
+    const res = await this.apiService.updateTexture(params.id, body);
     return res;
   }
 
@@ -161,10 +165,10 @@ export class ProductController {
     return res;
   }
 
-  @Del('/admin/texture')
+  @Del('/admin/texture/:id')
   @Validate()
-  async delTexture(@Body() body: IdDTO) {
-    const res = await this.apiService.deleteTexture(body.id);
+  async delTexture(@Param() params: IdDTO) {
+    const res = await this.apiService.deleteTexture(params.id);
     return res;
   }
 

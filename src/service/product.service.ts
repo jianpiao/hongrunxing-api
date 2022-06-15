@@ -227,9 +227,8 @@ export class ProductService {
     return res;
   }
 
-  async update(params: IProduct) {
+  async update(id: number, params: IProduct) {
     const {
-      id,
       name,
       desc,
       category,
@@ -413,8 +412,8 @@ export class ProductService {
     };
   }
 
-  async updateCategory(params: IProductCategory) {
-    const { id, name, src } = params;
+  async updateCategory(id: number, params: IProductCategory) {
+    const { name, src } = params;
     const res = await this.productCategoryModel.findOneBy({ id });
     name && (res.name = name);
     src && (res.src = src);
@@ -492,8 +491,8 @@ export class ProductService {
     };
   }
 
-  async updateTexture(params: IProductTexture) {
-    const { id, name, src, father_id } = params;
+  async updateTexture(id: number, params: IProductTexture) {
+    const { name, src, father_id } = params;
     const res = await this.productTextureModel.findOneBy({ id });
     name && (res.name = name);
     src && (res.src = src);

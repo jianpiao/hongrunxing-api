@@ -97,8 +97,8 @@ export class NewsService {
     return res;
   }
 
-  async update(params: INews) {
-    const { id, title, content, src, author } = params;
+  async update(id: number, params: INews) {
+    const { title, content, src, author } = params;
     const res = await this.newsModel.findOneBy({ id });
 
     title && (res.title = title);
@@ -173,8 +173,8 @@ export class NewsService {
     }));
   }
 
-  async updateCategory(params: INewsCategory) {
-    const { id, name } = params;
+  async updateCategory(id: number, params: INewsCategory) {
+    const { name } = params;
     const res = await this.newsCategoryModel.findOneBy({ id });
     name && (res.name = name);
     const saveRes = await this.newsCategoryModel.save(res);
