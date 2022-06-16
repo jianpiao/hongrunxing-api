@@ -11,7 +11,7 @@ import { Context } from '@midwayjs/koa';
 import { Validate } from '@midwayjs/validate';
 import { AddDTO, IdDTO, ListDTO } from '../dto/carousel';
 import { CarouselService } from '../service/carousel.service';
-import { RedisService } from '@midwayjs/redis';
+// import { RedisService } from '@midwayjs/redis';
 
 @Controller('/api/carousel')
 export class CarouselController {
@@ -21,8 +21,8 @@ export class CarouselController {
   @Inject()
   apiService: CarouselService;
 
-  @Inject()
-  redisService: RedisService;
+  // @Inject()
+  // redisService: RedisService;
 
   @Get('/get')
   async get(@Query() query: ListDTO) {
