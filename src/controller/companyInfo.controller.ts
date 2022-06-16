@@ -3,7 +3,9 @@ import { Context } from '@midwayjs/koa';
 import { Validate } from '@midwayjs/validate';
 import { InfoDTO } from '../dto/componyInfo';
 import { CompanyInfoService } from '../service/companyInfo.service';
-import { RedisService } from '@midwayjs/redis';
+import { CacheManager } from '@midwayjs/cache';
+
+// import { RedisService } from '@midwayjs/redis';
 
 @Controller('/api/company_info')
 export class CarouselController {
@@ -13,24 +15,27 @@ export class CarouselController {
   @Inject()
   apiService: CompanyInfoService;
 
+  // @Inject()
+  // redisService: RedisService;
+
   @Inject()
-  redisService: RedisService;
+  cacheManager: CacheManager; // 依赖注入 CacheManager
 
   @Get('/get')
   async get() {
-    // const key = 'getCompanyInfo';
-    // let result = await this.redisService.get(key);
+    const key = 'getCompanyInfo';
+    let result: string = await this.cacheManager.get(key);
 
-    // if (!result) {
-    //   const res = await this.apiService.findAll();
-    //   await this.redisService.set(key, JSON.stringify(res), 'EX', 60 * 5);
-    //   result = JSON.stringify(res);
-    // }
+    if (!result) {
+      const res = await this.apiService.findAll();
+      await this.cacheManager.set(key, JSON.stringify(res), { ttl: 60 });
+      result = JSON.stringify(res);
+    }
 
-    // return result && JSON.parse(result);
+    return result && JSON.parse(result);
 
-    const res = await this.apiService.findAll();
-    return res;
+    // const res = await this.apiService.findAll();
+    // return res;
   }
 
   @Get('/admin/get')

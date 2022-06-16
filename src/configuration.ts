@@ -13,16 +13,18 @@ import * as crossDomain from '@midwayjs/cross-domain';
 import { ILogger } from '@midwayjs/logger';
 import { FormatMiddleware } from './middleware/format.middleware';
 import { SessionMiddleware } from './middleware/cookie.middleware';
-import * as redis from '@midwayjs/redis';
+import * as cache from '@midwayjs/cache';
+// import * as redis from '@midwayjs/redis';
 
 @Configuration({
   imports: [
     orm,
     koa,
+    cache,
     upload,
     validate,
     staticFile,
-    redis, // 使用redis
+    // redis, // 使用redis
     crossDomain,
     {
       component: info,

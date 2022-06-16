@@ -140,6 +140,15 @@ export class ProductService {
       skip: (_current - 1) * _pageSize,
       take: _pageSize,
     });
+    // 获取图片列表
+    for (let i = 0; i < res.length; i++) {
+      res[i]['images'] = await this.productImagesModel.find({
+        where: {
+          father_id: res[i].id,
+          is_del: 0,
+        },
+      });
+    }
     const total = await this.productModel.count({
       where: obj,
     });

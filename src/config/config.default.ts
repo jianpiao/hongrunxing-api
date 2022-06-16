@@ -21,15 +21,15 @@ export default {
     dateStrings: true,
     timezone: '+08:00',
   },
-  redis: {
-    client: {
-      port: 6379, // Redis port
-      host: process.env.NODE_ENV === 'production' ? '0.0.0.0' : '127.0.0.1', // Redis host
-      // host: '127.0.0.1', // Redis host
-      password: passw,
-      db: 0,
-    },
-  },
+  // redis: {
+  //   client: {
+  //     port: 6379, // Redis port
+  //     host: process.env.NODE_ENV === 'production' ? '0.0.0.0' : '127.0.0.1', // Redis host
+  //     // host: '127.0.0.1', // Redis host
+  //     password: passw,
+  //     db: 0,
+  //   },
+  // },
   validate: {
     validationOptions: {
       allowUnknown: true, // 全局生效
