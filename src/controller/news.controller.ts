@@ -1,3 +1,4 @@
+import { CacheManager } from '@midwayjs/cache';
 import {
   Inject,
   Controller,
@@ -30,17 +31,39 @@ export class NewsController {
   @Inject()
   apiService: NewsService;
 
+  @Inject()
+  cacheManager: CacheManager;
+
   @Get('/get')
   async get(@Query() query: ListDTO) {
-    const res = await this.apiService.findAll(query);
-    res.list.forEach(e => {
-      e.content = e.content
-        .replace(/<\/?.+?\/?>/g, '')
-        .replace(/\s/g, '')
-        .replace(/&nbsp;/g, '')
-        .slice(0, 300);
-    });
-    return res;
+    const key = 'newsList';
+    // 获取数据
+    let result: string = await this.cacheManager.get(key);
+
+    if (!result) {
+      const res = await this.apiService.findAll(query);
+      res.list.forEach(e => {
+        e.content = e.content
+          .replace(/<\/?.+?\/?>/g, '')
+          .replace(/\s/g, '')
+          .replace(/&nbsp;/g, '')
+          .slice(0, 300);
+      });
+      await this.cacheManager.set(key, JSON.stringify(res));
+      result = JSON.stringify(res);
+    }
+
+    return result && JSON.parse(result);
+
+    // const res = await this.apiService.findAll(query);
+    // res.list.forEach(e => {
+    //   e.content = e.content
+    //     .replace(/<\/?.+?\/?>/g, '')
+    //     .replace(/\s/g, '')
+    //     .replace(/&nbsp;/g, '')
+    //     .slice(0, 300);
+    // });
+    // return res;
   }
 
   @Get('/admin/get')
@@ -51,8 +74,20 @@ export class NewsController {
 
   @Get('/:id')
   async getById(@Param() params: IdDTO) {
-    const res = await this.apiService.findById(params.id);
-    return res;
+    const key = 'newsDetail';
+    // 获取数据
+    let result: string = await this.cacheManager.get(key);
+
+    if (!result) {
+      const res = await this.apiService.findById(params.id);
+      await this.cacheManager.set(key, JSON.stringify(res));
+      result = JSON.stringify(res);
+    }
+
+    return result && JSON.parse(result);
+
+    // const res = await this.apiService.findById(params.id);
+    // return res;
   }
 
   @Post('/admin')

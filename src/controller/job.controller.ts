@@ -1,3 +1,4 @@
+import { CacheManager } from '@midwayjs/cache';
 import { Inject, Controller, Get, Post, Body } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import { Validate } from '@midwayjs/validate';
@@ -12,10 +13,22 @@ export class JobController {
   @Inject()
   jobService: JobService;
 
+  @Inject()
+  cacheManager: CacheManager;
+
   @Get('/get')
   async get() {
-    const res = await this.jobService.get();
-    return res;
+    const key = 'getJobList';
+    let result: string = await this.cacheManager.get(key);
+    if (!result) {
+      const res = await this.jobService.get();
+      await this.cacheManager.set(key, JSON.stringify(res));
+      result = JSON.stringify(res);
+    }
+
+    return result && JSON.parse(result);
+    // const res = await this.jobService.get();
+    // return res;
   }
 
   @Get('/admin/get')

@@ -21,6 +21,13 @@ export default {
     dateStrings: true,
     timezone: '+08:00',
   },
+  cache: {
+    store: 'memory',
+    options: {
+      max: 100,
+      ttl: 60, // 60秒
+    },
+  },
   // redis: {
   //   client: {
   //     port: 6379, // Redis port

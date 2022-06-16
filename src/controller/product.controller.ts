@@ -1,3 +1,4 @@
+import { CacheManager } from '@midwayjs/cache';
 import {
   Inject,
   Controller,
@@ -35,10 +36,21 @@ export class ProductController {
   @Inject()
   apiService: ProductService;
 
+  @Inject()
+  cacheManager: CacheManager;
+
   @Get('/get')
   async get(@Query() query: ListDTO) {
-    const res = await this.apiService.findAll(query);
-    return res;
+    const key = 'getProduct';
+    let result: string = await this.cacheManager.get(key);
+    if (!result) {
+      const res = await this.apiService.findAll(query);
+      await this.cacheManager.set(key, JSON.stringify(res));
+      result = JSON.stringify(res);
+    }
+    return result && JSON.parse(result);
+    // const res = await this.apiService.findAll(query);
+    // return res;
   }
 
   @Get('/admin/get')
@@ -60,8 +72,16 @@ export class ProductController {
 
   @Get('/getList')
   async getList(@Query() query: ListDataDTO) {
-    const res = await this.apiService.getList(query);
-    return res;
+    const key = 'getList';
+    let result: string = await this.cacheManager.get(key);
+    if (!result) {
+      const res = await this.apiService.getList(query);
+      await this.cacheManager.set(key, JSON.stringify(res));
+      result = JSON.stringify(res);
+    }
+    return result && JSON.parse(result);
+    // const res = await this.apiService.getList(query);
+    // return res;
   }
 
   @Get('/:id')
@@ -93,14 +113,30 @@ export class ProductController {
 
   @Get('/getCategoryList')
   async getCategoryList(@Query() query: RecommendDTO) {
-    const res = await this.apiService.findCategoryList(query.type);
-    return res;
+    const key = 'getCategoryList';
+    let result: string = await this.cacheManager.get(key);
+    if (!result) {
+      const res = await this.apiService.findCategoryList(query.type);
+      await this.cacheManager.set(key, JSON.stringify(res));
+      result = JSON.stringify(res);
+    }
+    return result && JSON.parse(result);
+    // const res = await this.apiService.findCategoryList(query.type);
+    // return res;
   }
 
   @Get('/getCategory')
   async getCategory(@Query() query: ListCategoryDTO) {
-    const res = await this.apiService.findCategory(query);
-    return res;
+    const key = 'getCategory';
+    let result: string = await this.cacheManager.get(key);
+    if (!result) {
+      const res = await await this.apiService.findCategory(query);
+      await this.cacheManager.set(key, JSON.stringify(res));
+      result = JSON.stringify(res);
+    }
+    return result && JSON.parse(result);
+    // const res = await this.apiService.findCategory(query);
+    // return res;
   }
 
   @Get('/admin/category')
@@ -141,8 +177,16 @@ export class ProductController {
 
   @Get('/getTexture')
   async getTexture(@Query() query: ListTextureDTO) {
-    const res = await this.apiService.findTexture(query);
-    return res;
+    const key = 'getTexture';
+    let result: string = await this.cacheManager.get(key);
+    if (!result) {
+      const res = await this.apiService.findTexture(query);
+      await this.cacheManager.set(key, JSON.stringify(res));
+      result = JSON.stringify(res);
+    }
+    return result && JSON.parse(result);
+    // const res = await this.apiService.findTexture(query);
+    // return res;
   }
 
   @Get('/admin/texture')
@@ -175,8 +219,16 @@ export class ProductController {
   @Get('/getCategoryTree')
   @Validate()
   async getCategoryTree() {
-    const res = await this.apiService.findCategoryTree();
-    return res;
+    const key = 'getCategoryTree';
+    let result: string = await this.cacheManager.get(key);
+    if (!result) {
+      const res = await this.apiService.findCategoryTree();
+      await this.cacheManager.set(key, JSON.stringify(res));
+      result = JSON.stringify(res);
+    }
+    return result && JSON.parse(result);
+    // const res = await this.apiService.findCategoryTree();
+    // return res;
   }
 
   @Get('/admin/getCategoryTree')
