@@ -28,7 +28,7 @@ export class APIController {
   async upload(@Files() files) {
     const base =
       process.env.NODE_ENV === 'production'
-        ? 'http://www.hongrunxingcarpet.com'
+        ? 'https://www.hongrunxingcarpet.com'
         : 'http://127.0.0.1:7001';
     const domain = `${base}/public/uploadFiles`;
     const filePath = files[0].data.split('uploadFiles')[1];
